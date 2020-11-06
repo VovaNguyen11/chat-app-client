@@ -1,0 +1,26 @@
+@import "antd/dist/antd.css";
+
+@import "mixins";
+@import "variables";
+
+html,
+body,
+#root,
+.wrapper {
+  height: 100%;
+}
+
+html {
+  color: $dark-font-color;
+  background: #f2f2f2;
+  @include respond-to(phone) {
+    padding: 15px 0;
+    font-size: 13px;
+  }
+  @include respond-to(desktop) {
+    font-size: 14px;
+  }
+  @include respond-to(lgDesktop) {
+    font-size: 16px;
+  }
+}

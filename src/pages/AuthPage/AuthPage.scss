@@ -1,0 +1,67 @@
+@import "~assets/styles/mixins";
+@import "~assets/styles/variables";
+
+.auth {
+  @include flex-centered;
+  height: 100%;
+
+  &__content {
+    width: 100%;
+    max-width: 430px;
+  }
+
+  .block {
+    width: 100%;
+  }
+
+  &__top {
+    text-align: center;
+    margin-bottom: 50px;
+    h2 {
+      font-size: rem(28);
+      margin: 0 0 5px;
+      line-height: 33px;
+    }
+
+    p {
+      color: $dark-font-color;
+      font-size: rem(18);
+      letter-spacing: 0.1px;
+      opacity: 0.5;
+      line-height: 21px;
+      font-weight: 300;
+    }
+  }
+
+  .button {
+    text-transform: uppercase;
+    width: 100%;
+    font-size: rem(14);
+    font-weight: 500;
+    letter-spacing: 0.1px;
+  }
+
+  &__register-link {
+    display: block;
+    text-align: center;
+    letter-spacing: 0.1px;
+    color: $grey-font-color;
+  }
+
+  &__success-block {
+    text-align: center;
+    svg {
+      width: 75px;
+      height: 75px;
+    }
+    h3 {
+      font-size: rem(32);
+      color: $dark-font-color;
+    }
+    p {
+      color: $grey-font-color;
+      font-size: rem(18);
+      font-weight: 300;
+    }
+  }
+}

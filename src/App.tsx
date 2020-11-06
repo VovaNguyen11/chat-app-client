@@ -1,11 +1,21 @@
-import React from "react";
+import React from "react"
+import {Route, Switch} from "react-router-dom"
+
+import {HomePage, AuthPage} from "./pages"
 
 const App = () => {
   return (
-    <div>
-      <h1>Hello World</h1>
+    <div className="wrapper">
+      <Switch>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route path="/auth">
+          <AuthPage />
+        </Route>
+      </Switch>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

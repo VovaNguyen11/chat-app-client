@@ -1,0 +1,68 @@
+@import "~assets/styles/variables";
+@import "~assets/styles/mixins";
+
+.message {
+  $self: &;
+  display: flex;
+
+  &--isme {
+    flex-direction: row-reverse;
+    #{$self}__avatar {
+      margin: 0 0 27px 15px;
+    }
+    #{$self}__bubble {
+      background: #ffffff;
+      border: 1px solid #ececec;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.03);
+      border-radius: 12px 12px 0px 12px;
+    }
+    #{$self}__text {
+      color: $dark-font-color;
+    }
+    #{$self}__date {
+      display: block;
+      text-align: right;
+    }
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    margin: 0 15px 27px 0;
+    border-radius: 50%;
+    align-self: flex-end;
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  &__status {
+    align-self: flex-end;
+    margin: 0 10px 25px 0;
+    img {
+      display: block;
+    }
+  }
+  &__bubble {
+    max-width: 440px;
+    padding: 10px;
+    background: $message-bg;
+    box-shadow: 0px 5px 5px rgba(54, 116, 255, 0.2);
+    border-radius: 12px 12px 12px 0px;
+    margin: 0 0 5px;
+  }
+
+  &__date {
+    font-size: rem(12);
+    color: $dark-font-color;
+    opacity: 0.4;
+  }
+
+  &__text {
+    color: #fff;
+    margin: 0;
+    font-size: rem(14);
+  }
+}
