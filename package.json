@@ -15,6 +15,8 @@
     "antd": "^4.8.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
+    "formik": "^2.2.2",
+    "formik-antd": "^2.0.1",
     "node-sass": "4.14.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

@@ -1,5 +1,9 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import {Link} from "react-router-dom"
+import {FormikProps} from "formik"
+
+import {Form, Input, FormItem} from "formik-antd"
+
 import {
   MailOutlined,
   LockOutlined,
@@ -7,12 +11,31 @@ import {
   InfoCircleTwoTone,
 } from "@ant-design/icons"
 
-import {Form, Input} from "antd"
 import {Button, Block} from "components"
 
-const LoginForm = () => {
-  const [form] = Form.useForm()
+export interface IFormValues {
+  email: string
+  fullName: string
+  password: string
+  passwordConfirm: string
+}
+
+const RegisterForm = (props: FormikProps<IFormValues>) => {
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    isValid,
+    isSubmitting,
+  } = props
   const [success, setSuccess] = useState(false)
+
+  useEffect(() => {
+    if (isValid && isSubmitting) {
+      setSuccess(true)
+    }
+  }, [isValid, isSubmitting])
 
   return (
     <Block>
@@ -22,51 +45,64 @@ const LoginForm = () => {
             <h2>Sign Up</h2>
             <p>Please register, to use chat</p>
           </div>
-          <Form form={form} name="form__signup">
-            <Form.Item name="email">
+          <Form onFinish={handleSubmit}>
+            <FormItem
+              name="email"
+              showValidateSuccess
+              showInitialErrorAfterTouched
+            >
               <Input
                 prefix={<MailOutlined className="site-form-item-icon" />}
-                id="email"
+                name="email"
                 placeholder="E-mail"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 size="large"
               />
-            </Form.Item>
-            <Form.Item name="username">
+            </FormItem>
+            <FormItem name="fullName" showValidateSuccess>
               <Input
                 prefix={<UserOutlined className="site-form-item-icon" />}
-                id="name"
+                name="fullName"
                 placeholder="Full Name"
+                onChange={handleChange}
+                value={values.fullName}
+                onBlur={handleBlur}
                 size="large"
               />
-            </Form.Item>
-            <Form.Item name="password">
+            </FormItem>
+            <FormItem name="password" showValidateSuccess>
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                id="password"
+                name="password"
                 type="password"
                 placeholder="Password"
+                onChange={handleChange}
+                value={values.password}
+                onBlur={handleBlur}
                 size="large"
               />
-            </Form.Item>
-            <Form.Item name="passwordConfirm">
+            </FormItem>
+            <FormItem name="passwordConfirm" showValidateSuccess>
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                id="passwordConfirm"
+                name="passwordConfirm"
                 type="password"
                 placeholder="Password confirm"
+                onChange={handleChange}
+                value={values.passwordConfirm}
+                onBlur={handleBlur}
                 size="large"
               />
-            </Form.Item>
-            <Form.Item>
-              <Button size="large" type="primary">
-                Register now
-              </Button>
-            </Form.Item>
-            <Form.Item>
-              <Link to="/auth/signin" className="auth__register-link">
-                Sign In
-              </Link>
-            </Form.Item>
+            </FormItem>
+
+            <Button size="large" type="primary" htmlType="submit">
+              Register now
+            </Button>
+            <Link to="/auth/signin" className="auth__register-link">
+              Sign In
+            </Link>
           </Form>
         </>
       ) : (
@@ -82,4 +118,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default RegisterForm

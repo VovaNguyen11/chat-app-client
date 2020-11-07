@@ -7,6 +7,11 @@ import checkedIcon from "assets/img/icon-message-read.svg"
 
 import "./Message.scss"
 
+interface IImgAttachment {
+  fileName: string
+  url: string
+}
+
 interface MessageProps {
   text: string
   avatarUrl: string
@@ -16,9 +21,18 @@ interface MessageProps {
   }
   isMe?: boolean
   isRead?: boolean
+  attachments?: Array<IImgAttachment>
 }
 
-const Message = ({user, text, avatarUrl, date, isMe, isRead}: MessageProps) => {
+const Message = ({
+  user,
+  text,
+  avatarUrl,
+  date,
+  isMe,
+  isRead,
+  attachments,
+}: MessageProps) => {
   return (
     <div className={classNames("message", {"message--isme": isMe})}>
       <div className="message__avatar">
@@ -28,6 +42,14 @@ const Message = ({user, text, avatarUrl, date, isMe, isRead}: MessageProps) => {
         <div className="message__bubble">
           <p className="message__text">{text}</p>
         </div>
+        {attachments && (
+          <div className="message__attachments">
+            {attachments.map(item => (
+              <img src={item.url} alt={item.fileName} />
+            ))}
+          </div>
+        )}
+
         <span className="message__date">
           {formatDistanceToNow(date, {addSuffix: true})}
         </span>
