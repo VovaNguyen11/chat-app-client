@@ -1,0 +1,81 @@
+@import "~assets/styles/mixins";
+@import "~assets/styles/variables";
+
+.dialogs {
+  &__item {
+    $item: &;
+    display: flex;
+    padding: 15px;
+    width: 100%;
+    max-width: 330px;
+
+    &--online {
+      #{$item}-avatar {
+        &::before {
+          content: "";
+          display: block;
+          position: absolute;
+          bottom: 1px;
+          right: 1px;
+          background-color: #00c980;
+          border-radius: 30px;
+          width: 13px;
+          height: 13px;
+          border: 3px solid #fff;
+        }
+      }
+    }
+
+    &-avatar {
+      position: relative;
+      flex: 1 0 50px;
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      &-top {
+        @include flex-s-between;
+        h3 {
+          font-size: rem(14);
+          font-weight: 500;
+          line-height: 16px;
+          margin: 0;
+        }
+        span {
+          font-size: rem(12);
+          color: $dark-font-color;
+          opacity: 0.4;
+        }
+      }
+      &-bottom {
+        @include flex-s-between;
+        align-items: flex-start;
+        p {
+          flex: 1 0 100%;
+          margin: 0;
+          max-width: 200px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          opacity: 0.6;
+        }
+      }
+    }
+    &-count {
+      background: #f46b6b;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 1;
+      padding: 4px 6px;
+      font-size: rem(10);
+    }
+  }
+}

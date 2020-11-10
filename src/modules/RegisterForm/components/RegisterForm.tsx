@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react"
 import {Link} from "react-router-dom"
 import {FormikProps} from "formik"
-
 import {Form, Input, FormItem} from "formik-antd"
+
+import {IFormValues} from "../../types"
 
 import {
   MailOutlined,
@@ -12,13 +13,6 @@ import {
 } from "@ant-design/icons"
 
 import {Button, Block} from "components"
-
-export interface IFormValues {
-  email: string
-  fullName: string
-  password: string
-  passwordConfirm: string
-}
 
 const RegisterForm = (props: FormikProps<IFormValues>) => {
   const {
@@ -58,6 +52,7 @@ const RegisterForm = (props: FormikProps<IFormValues>) => {
                 value={values.email}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                autoComplete="off"
                 size="large"
               />
             </FormItem>
@@ -69,6 +64,7 @@ const RegisterForm = (props: FormikProps<IFormValues>) => {
                 onChange={handleChange}
                 value={values.fullName}
                 onBlur={handleBlur}
+                autoComplete="off"
                 size="large"
               />
             </FormItem>
@@ -112,6 +108,7 @@ const RegisterForm = (props: FormikProps<IFormValues>) => {
           </div>
           <h3>Verify Your Email</h3>
           <p>Please check your email and confirm your email address</p>
+          <Link to="/">Return to home page</Link>
         </div>
       )}
     </Block>
