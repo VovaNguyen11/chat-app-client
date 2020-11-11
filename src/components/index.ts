@@ -1,6 +1,7 @@
 export {default as Block} from "./Block"
 export {default as Button} from "./Button"
 export {default as Message} from "./Messages/Message"
+export {default as MessageAudio} from "./Messages/MessgeAudio"
 export {default as Avatar} from "./Avatar"
 export {default as Date} from "./Date"
 export {default as IconCkecked} from "./IconChecked"

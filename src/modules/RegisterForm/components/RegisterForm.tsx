@@ -3,6 +3,8 @@ import {Link} from "react-router-dom"
 import {FormikProps} from "formik"
 import {Form, Input, FormItem} from "formik-antd"
 
+import {Button, Block} from "components"
+
 import {IFormValues} from "../../types"
 
 import {
@@ -12,7 +14,6 @@ import {
   InfoCircleTwoTone,
 } from "@ant-design/icons"
 
-import {Button, Block} from "components"
 
 const RegisterForm = (props: FormikProps<IFormValues>) => {
   const {

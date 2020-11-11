@@ -1,0 +1,49 @@
+@import "~assets/styles/mixins";
+
+audio {
+  display: none;
+}
+.audio {
+  padding: 15px;
+  background-color: #3674ff;
+  border-radius: 12px 12px 12px 0px;
+  width: 250px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 5px;
+  &__info {
+    position: relative;
+    @include flex-s-between;
+  }
+  &__btn {
+    @include flex-centered;
+    cursor: pointer;
+    border: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 30px;
+    background: #0f3997;
+    img {
+      width: 10px;
+      user-select: none;
+    }
+    &--play {
+      position: relative;
+      left: 1px;
+    }
+  }
+  &__duration {
+    color: #fff;
+    font-weight: 500;
+    opacity: 0.5;
+    font-size: 12px;
+  }
+  &__progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #418fff;
+    height: 100%;
+    transition: width 0.25s cubic-bezier(0, 0, 1, 1);
+  }
+}

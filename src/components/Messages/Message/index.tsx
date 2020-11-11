@@ -1,16 +1,14 @@
 import React from "react"
 import classNames from "classnames"
 
-import {Avatar, Date, IconCkecked} from "components"
+import {Avatar, Date, IconCkecked, MessageAudio} from "components"
+
+import {isAudio} from "utils/helpers"
 
 import {IUser} from "types/user"
+import {IAttachment} from "types/attachments"
 
 import "./Message.scss"
-
-interface IImgAttachment {
-  fileName: string
-  url: string
-}
 
 interface MessageProps {
   user: IUser
@@ -19,7 +17,19 @@ interface MessageProps {
   isMe?: boolean
   isChecked?: boolean
   isTyping?: boolean
-  attachments?: Array<IImgAttachment>
+  attachments?: Array<IAttachment>
+}
+
+const renderAttachment = (item: IAttachment) => {
+  if (item.ext !== "webm") {
+    return (
+      <div key={item._id} className="message__attachments-item">
+        <img src={item.url} alt={item.fileName} />
+      </div>
+    )
+  } else {
+    return <MessageAudio key={item._id} audioSrc={item.url} />
+  }
 }
 
 const Message = ({
@@ -37,7 +47,14 @@ const Message = ({
         "message",
         {"message--is-me": isMe},
         {"message--is-typing": isTyping},
-        {"message--image": attachments?.length === 1}
+        {
+          "message--image":
+            attachments &&
+            !isAudio(attachments) &&
+            attachments.length === 1 &&
+            !text,
+        },
+        {"message--audio": attachments && isAudio(attachments)}
       )}
     >
       <div className="message__avatar">
@@ -58,13 +75,7 @@ const Message = ({
         )}
         {attachments && (
           <div className="message__attachments">
-            {attachments.map((item, index) => (
-              <img
-                src={item.url}
-                alt={item.fileName}
-                key={item.fileName + index}
-              />
-            ))}
+            {attachments.map(item => renderAttachment(item))}
           </div>
         )}
         {date && (

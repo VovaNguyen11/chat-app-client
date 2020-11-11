@@ -3,7 +3,7 @@ import classNames from "classnames"
 
 import {Avatar, IconCkecked} from "components"
 
-import getMessageTime from "utils/getMessageTime"
+import {getMessageTime} from "utils/helpers"
 
 import {IUser} from "types/user"
 import {IMessage} from "types/message"

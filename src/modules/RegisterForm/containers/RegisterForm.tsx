@@ -2,7 +2,7 @@ import {withFormik} from "formik"
 import RegisterForm from "../components/RegisterForm"
 import {IFormValues} from "modules/types"
 
-import formValidate from "utils/formValidate"
+import {formValidate} from "utils/helpers"
 
 export default withFormik({
   mapPropsToValues: () => ({
