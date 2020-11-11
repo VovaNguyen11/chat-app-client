@@ -1,14 +1,7 @@
 import tinycolor from "tinycolor2"
 
-const getCorrectIndex = (value: number) => {
-  if (value > 255) {
-    return 255
-  }
-  if (value < 0) {
-    return 0
-  }
-  return value > 255 ? 255 : value < 0 ? 0 : value
-}
+const getCorrectIndex = (value: number) =>
+  value > 255 ? 255 : value < 0 ? 0 : value
 
 const generateAvatarFromHash = (hash: string | undefined) => {
   const [r, g, b] = hash

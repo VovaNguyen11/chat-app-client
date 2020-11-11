@@ -1,0 +1,25 @@
+.sidebar {
+  width: 25%;
+  padding: 0 20px;
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+
+    .anticon {
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+      &-team {
+        margin-right: 7px;
+      }
+      &-form {
+        margin-left: auto;
+      }
+    }
+  }
+  &__search-input {
+    padding: 20px 0;
+  }
+}

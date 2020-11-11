@@ -2,12 +2,16 @@
 @import "~assets/styles/variables";
 
 .dialogs {
+  width: 100%;
+  padding: 10px 0px;
   &__item {
     $item: &;
     display: flex;
-    padding: 15px;
     width: 100%;
-    max-width: 330px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 15px;
+    }
 
     &--online {
       #{$item}-avatar {
