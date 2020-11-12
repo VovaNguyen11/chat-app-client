@@ -1,0 +1,15 @@
+@import "~assets/styles/variables";
+@import "~assets/styles/mixins";
+.chat-input {
+  display: flex;
+  align-items: center;
+
+  &__emoji {
+    margin-top: 5px;
+    margin-right: 15px;
+  }
+  &__actions {
+    margin-left: 15px;
+    @include flex-s-between;
+  }
+}

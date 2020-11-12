@@ -1,0 +1,71 @@
+@import "~assets/styles/variables";
+@import "~assets/styles/mixins";
+.messages__history {
+  position: relative;
+  width: 75%;
+
+  .anticon {
+    cursor: pointer;
+    user-select: none;
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  &-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 35px;
+    background: #fff;
+    border-bottom: 2px solid #f7f7f7;
+  }
+  &-status-bar {
+    width: 100%;
+    text-align: center;
+    h3 {
+      margin: 0;
+      font-weight: 500;
+      font-size: rem(14);
+      color: $dark-font-color;
+    }
+    span {
+      position: relative;
+      font-size: rem(14);
+      color: $grey-font-color;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: #00c980;
+      }
+    }
+  }
+  &-content {
+    height: calc(100% - 163px);
+  }
+  &-footer {
+    padding: 25px 35px 35px;
+    background-color: #fff;
+    .ant-input {
+      padding-left: 35px;
+      color: $dark-font-color;
+      &:focus {
+        box-shadow: none;
+        border-color: initial;
+      }
+    }
+  }
+
+  // REMOVE LATER!!!!!!
+  .messages__list {
+    height: 100%;
+    padding: 10px 20px;
+    overflow-y: auto;
+  }
+}

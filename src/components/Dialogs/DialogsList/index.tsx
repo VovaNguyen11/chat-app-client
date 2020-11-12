@@ -10,9 +10,11 @@ interface DialogListProps {
 const DialogList = ({dialogs}: DialogListProps) => {
   return (
     <div className="dialogs">
-      {_orderBy(dialogs, d => d.message.createdAt, ["desc"]).map((d: any) => (
-        <DialogsItem key={d._id} {...d} />
-      ))}
+      {_orderBy(dialogs, d => new Date(d.message.createdAt), ["desc"]).map(
+        (d: any) => (
+          <DialogsItem key={d._id} {...d} />
+        )
+      )}
     </div>
   )
 }

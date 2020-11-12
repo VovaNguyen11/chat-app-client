@@ -8,7 +8,7 @@ import "./Button.scss";
 interface ButtonProps extends BaseButtonProps {
   className?: string;
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const Button = ({ className, onClick, children, ...props }: ButtonProps) => (
