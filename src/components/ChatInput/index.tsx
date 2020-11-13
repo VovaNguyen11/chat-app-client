@@ -21,7 +21,7 @@ const ChatInput = () => {
           icon={<SmileOutlined />}
         />
       </div>
-      <Input size="middle" placeholder="Write a message..." />
+      <Input.TextArea size="middle" placeholder="Write a message..." />
 
       <div className="chat-input__actions">
         <Button

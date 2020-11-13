@@ -1,24 +1,14 @@
 import React from "react"
 import classNames from "classnames"
 
-import {Avatar, Date, IconCkecked, MessageAudio} from "components"
+import {Avatar, Time, IconCkecked, MessageAudio} from "components"
 
 import {isAudio} from "utils/helpers"
 
-import {IUser} from "types/user"
-import {IAttachment} from "types/attachments"
+import {IAttachment} from "types/attachment"
 
 import "./Message.scss"
-
-interface MessageProps {
-  user: IUser
-  text?: string
-  date?: Date
-  isMe?: boolean
-  isChecked?: boolean
-  isTyping?: boolean
-  attachments?: Array<IAttachment>
-}
+import {IMessage} from "types"
 
 const renderAttachment = (item: IAttachment) => {
   if (item.ext !== "webm") {
@@ -35,12 +25,12 @@ const renderAttachment = (item: IAttachment) => {
 const Message = ({
   user,
   text,
-  date,
+  createdAt,
   isMe,
   isChecked,
   isTyping,
   attachments,
-}: MessageProps) => {
+}: IMessage) => {
   return (
     <div
       className={classNames(
@@ -78,9 +68,9 @@ const Message = ({
             {attachments.map(item => renderAttachment(item))}
           </div>
         )}
-        {date && (
+        {createdAt && (
           <div className="message__date">
-            <Date date={date} />
+            <Time date={createdAt} />
           </div>
         )}
       </div>

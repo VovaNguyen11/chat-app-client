@@ -5,19 +5,13 @@ import {Avatar, IconCkecked} from "components"
 
 import {getMessageTime} from "utils/helpers"
 
-import {IUser} from "types/user"
-import {IMessage} from "types/message"
+import {IDialog} from "types"
 
 import "../Dialogs.scss"
 
-interface DialogItemProps {
-  partner: IUser
-  isChecked: boolean
-  isMe: boolean
-  message: IMessage
-}
 
-const DialogItem = ({partner, isMe, isChecked, message}: DialogItemProps) => {
+
+const DialogItem = ({partner, isMe, isChecked, message}: IDialog) => {
   return (
     <div
       className={classNames("dialogs__item", {

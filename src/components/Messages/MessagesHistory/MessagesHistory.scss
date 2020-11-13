@@ -52,20 +52,5 @@
   &-footer {
     padding: 25px 35px 35px;
     background-color: #fff;
-    .ant-input {
-      padding-left: 35px;
-      color: $dark-font-color;
-      &:focus {
-        box-shadow: none;
-        border-color: initial;
-      }
-    }
-  }
-
-  // REMOVE LATER!!!!!!
-  .messages__list {
-    height: 100%;
-    padding: 10px 20px;
-    overflow-y: auto;
   }
 }

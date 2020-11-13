@@ -3,11 +3,23 @@
 .chat-input {
   display: flex;
   align-items: center;
+  position: relative;
 
   &__emoji {
     margin-top: 5px;
     margin-right: 15px;
   }
+  .ant-input {
+    resize: none;
+    height: 100%;
+    color: $dark-font-color;
+    line-height: 18px;
+    &:focus {
+      box-shadow: none;
+      border-color: initial;
+    }
+  }
+
   &__actions {
     margin-left: 15px;
     @include flex-s-between;
