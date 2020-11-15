@@ -1,32 +1,42 @@
 import React, {memo} from "react"
 import _orderBy from "lodash/orderBy"
-import {Input, Empty} from "antd"
+import {Empty, Spin} from "antd"
 
 import DialogsItem from "../DialogsItem"
+
+import {IDialog} from "types"
 
 import "../Dialogs.scss"
 
 interface DialogListProps {
-  dialogs?: any
-  handleSearch: (e: any) => any
+  dialogs: IDialog[]
+  isLoading: boolean
+  setCurrentDialogAction: (id: string) => void
 }
 
-const DialogList = ({dialogs, handleSearch}: DialogListProps) => {
-  const onInputChange = (e: any) => {
-    handleSearch(e.target.value)
-  }
-
+const DialogList = ({
+  dialogs,
+  isLoading,
+  setCurrentDialogAction,
+}: DialogListProps) => {
   return (
     <div className="dialogs">
-      <div className="sidebar__search-input">
-        <Input.Search placeholder="Search by users" onChange={onInputChange} />
-      </div>
-      {dialogs.length ? (
+      {isLoading ? (
+        <div className="dialogs--loading">
+          <Spin tip="Loading..." />
+        </div>
+      ) : dialogs.length ? (
         _orderBy(dialogs, d => new Date(d.message.createdAt), [
           "desc",
-        ]).map((d: any) => <DialogsItem key={d._id} {...d} />)
+        ]).map(d => (
+          <DialogsItem
+            key={d._id}
+            dialog={d}
+            setCurrentDialogAction={setCurrentDialogAction}
+          />
+        ))
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No results " />
+        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No results" />
       )}
     </div>
   )

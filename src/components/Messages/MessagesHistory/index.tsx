@@ -1,11 +1,10 @@
 import React from "react"
 import {EllipsisOutlined} from "@ant-design/icons"
 
-import {MessagesList, ChatInput, Button} from "components"
+import {ChatInput, Button} from "components"
+import {MessagesList} from "containers"
 
 import "./MessagesHistory.scss"
-
-import {messages} from "dialogs"
 
 const MessagesHistory = () => {
   return (
@@ -23,7 +22,7 @@ const MessagesHistory = () => {
         />
       </div>
       <div className="messages__history-content">
-        <MessagesList messages={messages} />
+        <MessagesList />
       </div>
 
       <div className="messages__history-footer">

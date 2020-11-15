@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div className="wrapper">
       <Switch>
-        <Route exact path="/">
+        <Route exact path={["/", "/dialogs/:id"]}>
           <HomePage />
         </Route>
         <Route path="/auth">

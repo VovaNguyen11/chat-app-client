@@ -1,5 +1,10 @@
+@import "~assets/styles/mixins";
+
 .messages__list {
   height: 100%;
   padding: 10px 20px;
   overflow-y: auto;
+  &--empty {
+    @include flex-centered;
+  }
 }

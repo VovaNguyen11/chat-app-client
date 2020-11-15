@@ -1,32 +1,65 @@
-import React, {useState, useCallback} from "react"
+import React, {useState, useEffect, memo} from "react"
+import {connect, ConnectedProps} from "react-redux"
+import {RootState} from "store/reducers"
 
-import {DialogsList as Dialogs} from "components"
+import {DialogsList as BaseDialogsList} from "components"
+
+import {fetchDialogsAction, setCurrentDialogAction} from "store/actions/dialogs"
 
 import {IDialog} from "types"
 
-interface DialogsListProps {
-  dialogs: Array<IDialog>
+interface DialogsListProps extends PropsFromRedux {
+  searchValue: string
 }
 
-const DialogsList = ({dialogs}: DialogsListProps) => {
-  const [filteredDialogs, setFilteredDialogs] = useState<Array<IDialog>>(
-    dialogs
-  )
-  const handleSearch = useCallback(
-    (value: string) => {
+const DialogsList = ({
+  dialogs,
+  searchValue,
+  isLoading,
+  fetchDialogsAction,
+  setCurrentDialogAction,
+}: DialogsListProps) => {
+  const [filteredDialogs, setFilteredDialogs] = useState<Array<IDialog>>([])
+
+  useEffect(() => {
+    fetchDialogsAction()
+  }, [fetchDialogsAction])
+
+  useEffect(() => {
+    setFilteredDialogs(dialogs)
+    if (searchValue) {
       setFilteredDialogs(
         dialogs.filter(
           dialog =>
-            dialog.partner.fullName
+            dialog.message.partner.fullName
               .toLowerCase()
-              .indexOf(value.toLowerCase()) >= 0
+              .indexOf(searchValue.toLowerCase()) >= 0
         )
       )
-    },
-    [dialogs]
-  )
+    }
+  }, [searchValue, dialogs])
 
-  return <Dialogs handleSearch={handleSearch} dialogs={filteredDialogs} />
+  return (
+    <BaseDialogsList
+      dialogs={filteredDialogs}
+      setCurrentDialogAction={setCurrentDialogAction}
+      isLoading={isLoading}
+    />
+  )
 }
 
-export default DialogsList
+const mapStateToProps = ({dialogs}: RootState) => ({
+  dialogs: dialogs.items,
+  isLoading: dialogs.isLoading,
+})
+
+const mapDispatchToProps = {
+  fetchDialogsAction,
+  setCurrentDialogAction,
+}
+
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+export default connector(memo(DialogsList))
