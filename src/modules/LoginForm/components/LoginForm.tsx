@@ -1,5 +1,6 @@
-import React from "react"
-import {Link} from "react-router-dom"
+import React, {useEffect} from "react"
+import {Link, RouteComponentProps} from "react-router-dom"
+import {useSelector} from "react-redux"
 import {FormikProps} from "formik"
 import {Form, Input, FormItem} from "formik-antd"
 
@@ -8,13 +9,28 @@ import {Button, Block} from "components"
 
 import {ILoginFormValues} from "../../types"
 
+import {RootState} from "store/reducers"
+
+interface LoginFormContainerProps
+  extends RouteComponentProps<any>,
+    FormikProps<ILoginFormValues> {}
+
 const LoginForm = ({
   values,
   handleSubmit,
   handleChange,
   isSubmitting,
   status,
-}: FormikProps<ILoginFormValues>) => {
+  history,
+}: LoginFormContainerProps) => {
+  const isAuth = useSelector(({user}: RootState) => user.isAuth)
+
+  useEffect(() => {
+    if (isAuth) {
+      history.push("/im")
+    }
+  }, [isAuth, history])
+
   return (
     <Block>
       <div className="auth__top">

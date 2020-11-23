@@ -8,7 +8,7 @@ import {IUser} from "types"
 
 import {userApi} from "utils/services/api"
 
-type AppThunk<ReturnType = void> = ThunkAction<
+type AppThunk<ReturnType = Promise<any>> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
@@ -25,40 +25,19 @@ export const setIsAuth = (value: boolean) => ({
   payload: value,
 })
 
-export const fetchUserData = (): AppThunk => dispatch => {
-  userApi
-    .getUserData()
-    .then(data => {
-      dispatch(setUser(data))
-    })
-    .catch(err => {
-      if (err.response.status === 403) {
-        dispatch(setIsAuth(false))
-        delete window.localStorage.token
-      }
-    })
-}
-
-export const fetchUserDataAction = (
-  postData: ILoginFormValues,
-  setStatus: (status?: any) => void,
-  setSubmitting: (isSubmitting: boolean) => void,
-  setFieldValue: (field: string, value: any) => void
-): AppThunk => dispatch => {
-  userApi
+export const fetchUserLoginAction = (postData: ILoginFormValues): AppThunk => (
+  dispatch
+): Promise<any> => {
+  return userApi
     .signIn(postData)
     .then(({token}) => {
-      window.localStorage["token"] = token
       neworkService.api.defaults.headers.common["token"] = token
-      dispatch(fetchUserData())
-      dispatch(setIsAuth(true))
-      setStatus()
+      window.localStorage.token = token
     })
-    .catch(err => {
-      setStatus({error: err.response.data.message})
-    })
-    .finally(() => {
-      setSubmitting(false)
-      setFieldValue("password", "")
+    .then(() => {
+      userApi.getUserData().then(data => {
+        dispatch(setUser(data))
+        dispatch(setIsAuth(true))
+      })
     })
 }

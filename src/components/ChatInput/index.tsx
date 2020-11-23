@@ -9,7 +9,6 @@ import "./ChatInput.scss"
 const ChatInput = () => {
   return (
     <div className="chat-input">
-      {console.log("render")}
       <div className="chat-input__emoji">
         <EmojiPicker />
       </div>

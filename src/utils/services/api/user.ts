@@ -3,11 +3,11 @@ import {POST, GET} from "../network.service"
 import {ILoginFormValues} from "modules/types"
 
 const userApi = {
-  async signIn(postData: ILoginFormValues) {
-    return await POST("/user/signin", postData)
+  signIn(postData: ILoginFormValues) {
+    return POST("/user/signin", postData)
   },
-  async getUserData() {
-    return await GET("/user/me")
+  getUserData() {
+    return GET("/user/me")
   },
 }
 
