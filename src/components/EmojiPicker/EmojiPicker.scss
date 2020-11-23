@@ -1,0 +1,18 @@
+.emoji-picker {
+  position: absolute;
+  bottom: 50px;
+  z-index: 1;
+  .emoji-mart {
+    &-bar {
+      display: none;
+    }
+    &-emoji {
+      span {
+        cursor: pointer;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

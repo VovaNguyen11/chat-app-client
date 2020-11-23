@@ -1,32 +1,52 @@
-import React, {memo} from "react"
-import _orderBy from "lodash/orderBy"
+import React, {useEffect, useState} from "react"
+import {useSelector, useDispatch} from "react-redux"
 import {Empty, Spin} from "antd"
-
-import DialogsItem from "../DialogsItem"
+import _orderBy from "lodash/orderBy"
 
 import {IDialog} from "types"
+import {RootState} from "store/reducers"
+import {fetchDialogsAction, setCurrentDialogAction} from "store/actions/dialogs"
+
+import {DialogsItem} from "components"
 
 import "../Dialogs.scss"
 
-interface DialogListProps {
-  dialogs: IDialog[]
-  isLoading: boolean
-  setCurrentDialogAction: (id: string) => void
+interface DialogsListProps {
+  searchValue: string
 }
 
-const DialogList = ({
-  dialogs,
-  isLoading,
-  setCurrentDialogAction,
-}: DialogListProps) => {
+const DialogsList = ({searchValue}: DialogsListProps) => {
+  const dispatch = useDispatch()
+  const {dialogs, isLoading} = useSelector(({dialogs}: RootState) => ({
+    dialogs: dialogs.items,
+    isLoading: dialogs.isLoading,
+  }))
+
+  const [filteredDialogs] = useState<Array<IDialog>>(dialogs)
+
+  useEffect(() => {
+    dispatch(fetchDialogsAction())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (searchValue) {
+      filteredDialogs.filter(
+        dialog =>
+          dialog.message.partner.fullName
+            .toLowerCase()
+            .indexOf(searchValue.toLowerCase()) >= 0
+      )
+    }
+  }, [searchValue, filteredDialogs])
+
   return (
     <div className="dialogs">
       {isLoading ? (
         <div className="dialogs--loading">
           <Spin tip="Loading..." />
         </div>
-      ) : dialogs.length ? (
-        _orderBy(dialogs, d => new Date(d.message.createdAt), [
+      ) : filteredDialogs.length ? (
+        _orderBy(filteredDialogs, d => new Date(d.message.createdAt), [
           "desc",
         ]).map(d => (
           <DialogsItem
@@ -42,4 +62,4 @@ const DialogList = ({
   )
 }
 
-export default memo(DialogList)
+export default DialogsList

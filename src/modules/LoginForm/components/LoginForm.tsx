@@ -1,37 +1,56 @@
 import React from "react"
 import {Link} from "react-router-dom"
+import {FormikProps} from "formik"
+import {Form, Input, FormItem} from "formik-antd"
 
-import {Form, Input} from "antd"
 import {MailOutlined, LockOutlined} from "@ant-design/icons"
 import {Button, Block} from "components"
 
-const LoginForm = () => {
-  const [form] = Form.useForm()
+import {ILoginFormValues} from "../../types"
+
+const LoginForm = ({
+  values,
+  handleSubmit,
+  handleChange,
+  isSubmitting,
+  status,
+}: FormikProps<ILoginFormValues>) => {
   return (
     <Block>
       <div className="auth__top">
         <h2>Войдите в аккаунт</h2>
         <p>Пожалуйста,войдите в аккаунт</p>
       </div>
-      <Form form={form} name="form__login">
-        <Form.Item name="email">
+      <Form onFinish={handleSubmit}>
+        <FormItem name="email">
           <Input
             prefix={<MailOutlined className="site-form-item-icon" />}
             name="email"
             placeholder="E-mail"
             size="large"
+            // autoComplete="off"
+            value={values.email}
+            onChange={handleChange}
           />
-        </Form.Item>
-        <Form.Item name="password">
+        </FormItem>
+        <FormItem name="password">
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
             name="password"
             type="password"
             placeholder="Password"
             size="large"
+            value={values.password}
+            onChange={handleChange}
           />
-        </Form.Item>
-        <Button size="large" type="primary">
+        </FormItem>
+        {status?.error && <p style={{color: "red"}}>*{status.error}</p>}
+        <Button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          disabled={isSubmitting}
+        >
           Log in
         </Button>
         <Link to="/auth/signup" className="auth__register-link">

@@ -5,7 +5,7 @@ import {Form, Input, FormItem} from "formik-antd"
 
 import {Button, Block} from "components"
 
-import {IFormValues} from "../../types"
+import {IRegistrationFormValues} from "../../types"
 
 import {
   MailOutlined,
@@ -14,8 +14,7 @@ import {
   InfoCircleTwoTone,
 } from "@ant-design/icons"
 
-
-const RegisterForm = (props: FormikProps<IFormValues>) => {
+const RegisterForm = (props: FormikProps<IRegistrationFormValues>) => {
   const {
     values,
     handleSubmit,

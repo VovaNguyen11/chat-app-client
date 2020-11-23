@@ -1,28 +1,19 @@
 import React from "react"
 import {Input} from "antd"
-import {Button} from "components"
-import {
-  SmileOutlined,
-  CameraOutlined,
-  SendOutlined,
-  AudioOutlined,
-} from "@ant-design/icons"
+import {Button, EmojiPicker} from "components"
+
+import {CameraOutlined, SendOutlined, AudioOutlined} from "@ant-design/icons"
 
 import "./ChatInput.scss"
 
 const ChatInput = () => {
   return (
     <div className="chat-input">
+      {console.log("render")}
       <div className="chat-input__emoji">
-        <Button
-          onClick={() => console.log(123)}
-          type="link"
-          shape="circle"
-          icon={<SmileOutlined />}
-        />
+        <EmojiPicker />
       </div>
       <Input.TextArea size="middle" placeholder="Write a message..." />
-
       <div className="chat-input__actions">
         <Button
           onClick={() => console.log("Send attcahments")}

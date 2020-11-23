@@ -5,11 +5,12 @@ export interface IFormErrors {
   passwordConfirm?: string
 }
 
-export interface IFormValues {
-  email?: string
-  fullName?: string
-  password?: string
-  passwordConfirm?: string
-  [key: string]: string | undefined
+export interface ILoginFormValues {
+  email: string
+  password: string
 }
 
+export interface IRegistrationFormValues extends ILoginFormValues {
+  fullName: string
+  passwordConfirm: string
+}

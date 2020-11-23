@@ -1,26 +1,38 @@
-import React, {memo} from "react"
-import {Empty, Spin} from "antd"
+import React, {useEffect, useRef} from "react"
+import {useSelector, useDispatch} from "react-redux"
+import {Spin, Empty} from "antd"
 import classNames from "classnames"
+
+import {RootState} from "store/reducers"
+
+import {fetchMessagesAction} from "store/actions/messages"
 
 import {Message} from "components"
 
-import {IMessage} from "types"
-
 import "./MessagesList.scss"
 
-interface MessagesListProps {
-  messages: IMessage[]
-  isLoading: boolean
-  messagesRef: React.RefObject<HTMLDivElement>
-  currentDialogId: string
-}
+const MessagesList = () => {
+  const dispatch = useDispatch()
+  const {messages, currentDialogId, isLoading} = useSelector(
+    ({messages, dialogs}: RootState) => ({
+      messages: messages.items,
+      isLoading: messages.isLoading,
+      currentDialogId: dialogs.currentDialogId,
+    })
+  )
 
-const MessagesList = ({
-  messages,
-  isLoading,
-  messagesRef,
-  currentDialogId,
-}: MessagesListProps) => {
+  const messagesRef = useRef() as React.MutableRefObject<HTMLDivElement>
+
+  useEffect(() => {
+    if (currentDialogId) {
+      dispatch(fetchMessagesAction(currentDialogId))
+    }
+  }, [currentDialogId, dispatch])
+
+  useEffect(() => {
+    messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight)
+  }, [messages])
+
   return (
     <div
       className={classNames("messages__list", {
@@ -43,4 +55,4 @@ const MessagesList = ({
   )
 }
 
-export default memo(MessagesList)
+export default MessagesList

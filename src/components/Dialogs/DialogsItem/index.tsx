@@ -1,6 +1,6 @@
 import React, {memo} from "react"
 import classNames from "classnames"
-import {Link} from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 import {Avatar, IconCkecked} from "components"
 
 import {getMessageTime} from "utils/helpers"
@@ -9,18 +9,29 @@ import {IDialog} from "types"
 
 import "../Dialogs.scss"
 
+interface MatchParams {
+  id: string
+}
+
 interface DialogItemProps {
   setCurrentDialogAction: (id: string) => void
   dialog: IDialog
 }
 
-const DialogItem = ({dialog, setCurrentDialogAction}: DialogItemProps) => {
+const DialogItem = ({
+  dialog,
+
+  setCurrentDialogAction,
+}: DialogItemProps) => {
   const {isMe, isChecked, message, _id} = dialog
+  const {id} = useParams<MatchParams>()
+
   return (
     <Link
       to={`/dialogs/${_id}`}
       className={classNames("dialogs__item", {
         "dialogs__item--online": message.partner.isOnline,
+        "dialogs__item--active": id === _id,
       })}
       onClick={() => setCurrentDialogAction(_id)}
     >

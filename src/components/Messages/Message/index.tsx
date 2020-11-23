@@ -1,14 +1,15 @@
 import React from "react"
 import classNames from "classnames"
+import reactStringReplace from "react-string-replace"
+import {Emoji} from "emoji-mart"
 
 import {Avatar, Time, IconCkecked, MessageAudio} from "components"
 
 import {isAudio} from "utils/helpers"
 
-import {IAttachment} from "types/attachment"
+import {IAttachment, IMessage} from "types"
 
 import "./Message.scss"
-import {IMessage} from "types"
 
 const renderAttachment = (item: IAttachment) => {
   if (item.ext !== "webm") {
@@ -53,7 +54,13 @@ const Message = ({
       <div className="message__content">
         {(text || isTyping) && (
           <div className="message__bubble">
-            {text && <p className="message__text">{text}</p>}
+            {text && (
+              <p className="message__text">
+                {reactStringReplace(text, /:(.+?):/g, (match, i) => (
+                  <Emoji key={i} emoji={match} set="apple" size={16} />
+                ))}
+              </p>
+            )}
             {isTyping && (
               <div className="message__typing">
                 <span />

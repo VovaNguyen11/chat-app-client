@@ -1,11 +1,12 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios"
+;(window as any).axios = axios
 
 class NetworkService {
-  private static api: AxiosInstance
+  public static api: AxiosInstance
 
   public static init() {
     NetworkService.api = axios.create({
-      baseURL: "http://localhost:3001",
+      baseURL: window.location.origin,
     })
   }
 

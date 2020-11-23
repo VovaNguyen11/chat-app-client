@@ -1,22 +1,29 @@
 import {withFormik} from "formik"
 import RegisterForm from "../components/RegisterForm"
-import {IFormValues} from "modules/types"
+import {IRegistrationFormValues} from "modules/types"
 
 import {formValidate} from "utils/helpers"
 
-export default withFormik({
+const RegisterFormContainer = withFormik({
   mapPropsToValues: () => ({
     email: "",
     fullName: "",
     password: "",
     passwordConfirm: "",
   }),
-  validate: (values: IFormValues) => {
+  validate: (values: IRegistrationFormValues) => {
     return formValidate(values)
   },
-  handleSubmit: (values: IFormValues, {resetForm, setSubmitting}) => {
+  handleSubmit: (
+    values: IRegistrationFormValues,
+    {resetForm, setSubmitting}
+  ) => {
+    console.log(values)
+
     setSubmitting(false)
     resetForm()
   },
   displayName: "Register Form",
 })(RegisterForm)
+
+export default RegisterFormContainer

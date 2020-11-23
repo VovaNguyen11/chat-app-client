@@ -3,8 +3,10 @@ export const SET_CURRENT_DIALOG = "SET_CURRENT_DIALOG"
 export const SET_MESSAGES = "SET_MESSAGES"
 export const SET_MESSAGES_LOADING = "SET_MESSAGES_LOADING"
 export const SET_DIALOGS_LOADING = "SET_DIALOGS_LOADING"
+export const SET_USER = "SET_USER"
+export const SET_IS_AUTH = "SET_IS_AUTH"
 
-// export const SET_LOADING = "SET_LOADING"
+
 // export const ADD_PIZZA_CART = "ADD_PIZZA_CART"
 // export const REMOVE_PIZZA_CART = "REMOVE_PIZZA_CART"
 // export const PLUS_PIZZA_CART = "PLUS_PIZZA_CART"

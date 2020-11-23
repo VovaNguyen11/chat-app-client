@@ -1,8 +1,7 @@
 import React from "react"
 import {EllipsisOutlined} from "@ant-design/icons"
 
-import {ChatInput, Button} from "components"
-import {MessagesList} from "containers"
+import {ChatInput, Button, MessagesList} from "components"
 
 import "./MessagesHistory.scss"
 

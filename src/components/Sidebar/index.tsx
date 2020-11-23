@@ -3,8 +3,7 @@ import React, {useState} from "react"
 import Input from "antd/lib/input"
 import {TeamOutlined, FormOutlined} from "@ant-design/icons"
 
-import {Button} from "components"
-import {DialogsList} from "containers"
+import {Button, DialogsList} from "components"
 
 import "./Sidebar.scss"
 

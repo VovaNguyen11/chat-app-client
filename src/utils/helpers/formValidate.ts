@@ -1,4 +1,4 @@
-import {IFormValues, IFormErrors} from "modules/types"
+import {IRegistrationFormValues, IFormErrors} from "modules/types"
 
 // interface ValidateProps {
 //   isLogin: boolean
@@ -17,7 +17,7 @@ const validate = ({
   fullName,
   password,
   passwordConfirm,
-}: IFormValues) => {
+}: IRegistrationFormValues) => {
   const errors: IFormErrors = {}
 
   if (!email) {
