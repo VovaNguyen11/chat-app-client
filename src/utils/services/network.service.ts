@@ -7,6 +7,9 @@ class NetworkService {
   public static init() {
     NetworkService.api = axios.create({
       baseURL: window.location.origin,
+      headers: {
+        token: window.localStorage.token,
+      },
     })
   }
 

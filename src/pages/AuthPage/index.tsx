@@ -1,8 +1,8 @@
 import React from "react"
-import {Redirect, Route, Switch} from "react-router-dom"
+import {Route, Switch} from "react-router-dom"
 
 import {LoginForm, RegisterForm} from "modules"
-
+import VerifyEmail from "./components/VerifyEmail"
 import "./AuthPage.scss"
 
 const AuthPage = () => {
@@ -10,14 +10,14 @@ const AuthPage = () => {
     <section className="auth">
       <div className="auth__content">
         <Switch>
-          <Route path="/auth/signin">
+          <Route path="/signin">
             <LoginForm />
           </Route>
-          <Route path="/auth/signup">
+          <Route exact path="/signup">
             <RegisterForm />
           </Route>
-          <Route path="*">
-            <Redirect to="/auth/signin" />
+          <Route path="/signup/verify">
+            <VerifyEmail />
           </Route>
         </Switch>
       </div>

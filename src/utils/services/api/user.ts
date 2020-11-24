@@ -1,10 +1,16 @@
 import {POST, GET} from "../network.service"
 
-import {ILoginFormValues} from "modules/types"
+import {ILoginFormValues, IRegistrationFormValues} from "modules/types"
 
 const userApi = {
+  signUp(postData: IRegistrationFormValues) {
+    return POST("/user/signup", postData)
+  },
   signIn(postData: ILoginFormValues) {
     return POST("/user/signin", postData)
+  },
+  verifyEmail(hashQuery: string) {
+    return GET(`/user/verify${hashQuery}`)
   },
   getUserData() {
     return GET("/user/me")

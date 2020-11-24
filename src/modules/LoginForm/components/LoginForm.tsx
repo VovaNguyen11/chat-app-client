@@ -61,6 +61,7 @@ const LoginForm = ({
           />
         </FormItem>
         {status?.error && <p style={{color: "red"}}>*{status.error}</p>}
+
         <Button
           size="large"
           type="primary"
@@ -69,7 +70,7 @@ const LoginForm = ({
         >
           Log in
         </Button>
-        <Link to="/auth/signup" className="auth__register-link">
+        <Link to="/signup" className="auth__register-link">
           Sign Up
         </Link>
       </Form>

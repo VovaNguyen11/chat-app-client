@@ -11,13 +11,12 @@ const App = () => {
   return (
     <div className="wrapper">
       <Switch>
-        <Route exact path={["/im", "/dialogs/:id"]}>
-          {isAuth ? <HomePage /> : <Redirect to="/auth" />}
+        <Route exact path={["/", "/im", "/dialogs/:id"]}>
+          {isAuth ? <HomePage /> : <Redirect to="/signup" />}
         </Route>
-        <Route path="/auth">
+        <Route path={["/signin", "/signup"]}>
           <AuthPage />
         </Route>
-        <Redirect to="/im" />
       </Switch>
     </div>
   )

@@ -25,10 +25,10 @@ export const setIsAuth = (value: boolean) => ({
   payload: value,
 })
 
-export const fetchUserLoginAction = (postData: ILoginFormValues): AppThunk => (
+export const UserLoginAction = (postData: ILoginFormValues): AppThunk => (
   dispatch
-): Promise<any> => {
-  return userApi
+): Promise<any> =>
+  userApi
     .signIn(postData)
     .then(({token}) => {
       neworkService.api.defaults.headers.common["token"] = token
@@ -40,4 +40,3 @@ export const fetchUserLoginAction = (postData: ILoginFormValues): AppThunk => (
         dispatch(setIsAuth(true))
       })
     })
-}

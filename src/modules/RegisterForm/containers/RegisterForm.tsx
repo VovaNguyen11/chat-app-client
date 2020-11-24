@@ -1,10 +1,16 @@
 import {withFormik} from "formik"
+import {RouteComponentProps, withRouter} from "react-router-dom"
+
 import RegisterForm from "../components/RegisterForm"
 import {IRegistrationFormValues} from "modules/types"
-
 import {formValidate} from "utils/helpers"
 
-const RegisterFormContainer = withFormik({
+import {userApi} from "utils/services/api"
+
+const RegisterFormContainer = withFormik<
+  RouteComponentProps<any>,
+  IRegistrationFormValues
+>({
   mapPropsToValues: () => ({
     email: "",
     fullName: "",
@@ -14,16 +20,22 @@ const RegisterFormContainer = withFormik({
   validate: (values: IRegistrationFormValues) => {
     return formValidate(values)
   },
-  handleSubmit: (
+  handleSubmit: async (
     values: IRegistrationFormValues,
-    {resetForm, setSubmitting}
+    {setSubmitting, setFieldError, props}
   ) => {
-    console.log(values)
-
-    setSubmitting(false)
-    resetForm()
+    try {
+      await userApi.signUp(values)
+      props.history.push("/signup/verify")
+    } catch ({response}) {
+      if (response.data.errors.email) {
+        setFieldError("email", response.data.errors.email.msg)
+      }
+    } finally {
+      setSubmitting(false)
+    }
   },
   displayName: "Register Form",
 })(RegisterForm)
 
-export default RegisterFormContainer
+export default withRouter(RegisterFormContainer)

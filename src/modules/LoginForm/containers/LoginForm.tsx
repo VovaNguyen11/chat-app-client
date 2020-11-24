@@ -5,7 +5,7 @@ import {RouteComponentProps, withRouter} from "react-router-dom"
 import LoginForm from "../components/LoginForm"
 
 import {ILoginFormValues} from "modules/types"
-import {fetchUserLoginAction} from "store/actions/user"
+import {UserLoginAction} from "store/actions/user"
 
 interface LoginFormContainerProps
   extends RouteComponentProps<any>,
@@ -25,7 +25,7 @@ const LoginFormContainer = withFormik<
     {setSubmitting, setFieldValue, setStatus, props}
   ) => {
     try {
-      await props.fetchUserLoginAction(values)
+      await props.UserLoginAction(values)
       setStatus()
     } catch (error) {
       setStatus({error: error.response.data.message})
@@ -37,7 +37,7 @@ const LoginFormContainer = withFormik<
   displayName: "LoginForm",
 })(LoginForm)
 
-const connector = connect(null, {fetchUserLoginAction})
+const connector = connect(null, {UserLoginAction})
 
 type PropsFromRedux = ConnectedProps<typeof connector>
 
