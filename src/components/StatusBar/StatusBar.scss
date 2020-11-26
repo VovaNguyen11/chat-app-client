@@ -1,0 +1,48 @@
+@import "~assets/styles/variables";
+@import "~assets/styles/mixins";
+
+.status-bar {
+  width: 100%;
+  text-align: center;
+  @include flex-centered;
+  &__content {
+    width: 100%;
+    h3 {
+      margin: 0;
+      font-weight: 500;
+      font-size: rem(14);
+      color: $dark-font-color;
+    }
+    .status {
+      font-size: rem(14);
+      color: $grey-font-color;
+      position: relative;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: -12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: $grey-font-color;
+      }
+      &--online {
+        &::before {
+          background-color: #00c980;
+        }
+      }
+    }
+  }
+  .anticon {
+    cursor: pointer;
+    user-select: none;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

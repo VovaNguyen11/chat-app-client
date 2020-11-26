@@ -1,5 +1,4 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios"
-;(window as any).axios = axios
 
 class NetworkService {
   public static api: AxiosInstance
@@ -7,9 +6,6 @@ class NetworkService {
   public static init() {
     NetworkService.api = axios.create({
       baseURL: window.location.origin,
-      headers: {
-        token: window.localStorage.token,
-      },
     })
   }
 
@@ -65,6 +61,19 @@ class NetworkService {
 }
 
 NetworkService.init()
+
+NetworkService.api.interceptors.request.use(
+  function (config) {
+    const token = window.localStorage.token
+    if (token) {
+      config.headers.token = token
+    }
+    return config
+  },
+  function (error) {
+    return Promise.reject(error)
+  }
+)
 
 const GET = NetworkService.get
 const POST = NetworkService.post

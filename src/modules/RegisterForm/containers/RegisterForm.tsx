@@ -1,11 +1,11 @@
 import {withFormik} from "formik"
 import {RouteComponentProps, withRouter} from "react-router-dom"
 
-import RegisterForm from "../components/RegisterForm"
-import {IRegistrationFormValues} from "modules/types"
+import {IRegistrationFormValues} from "types"
+import {userApi} from "services/api"
 import {formValidate} from "utils/helpers"
 
-import {userApi} from "utils/services/api"
+import RegisterForm from "../components/RegisterForm"
 
 const RegisterFormContainer = withFormik<
   RouteComponentProps<any>,

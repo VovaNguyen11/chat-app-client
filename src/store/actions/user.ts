@@ -1,12 +1,13 @@
 import {Action} from "redux"
 import {ThunkAction} from "redux-thunk"
-import neworkService from "utils/services/network.service"
+import NetworkService from "services/network.service"
+
 import {SET_USER, SET_IS_AUTH} from "../actions_constants"
 import {RootState} from "store/reducers"
-import {ILoginFormValues} from "modules/types"
 import {IUser} from "types"
+import {ILoginFormValues} from "types"
 
-import {userApi} from "utils/services/api"
+import {userApi} from "services/api"
 
 type AppThunk<ReturnType = Promise<any>> = ThunkAction<
   ReturnType,
@@ -25,18 +26,28 @@ export const setIsAuth = (value: boolean) => ({
   payload: value,
 })
 
-export const UserLoginAction = (postData: ILoginFormValues): AppThunk => (
+export const getUserDataAction = (): AppThunk => (dispatch): Promise<any> =>
+  userApi
+    .getUserData()
+    .then(data => {
+      dispatch(setUser(data))
+    })
+    .catch(err => {
+      if (err.response.status === 403) {
+        dispatch(setIsAuth(false))
+        delete window.localStorage.token
+      }
+    })
+
+export const userLoginAction = (postData: ILoginFormValues): AppThunk => (
   dispatch
 ): Promise<any> =>
   userApi
     .signIn(postData)
     .then(({token}) => {
-      neworkService.api.defaults.headers.common["token"] = token
+      NetworkService.api.defaults.headers.common["token"] = token
       window.localStorage.token = token
     })
     .then(() => {
-      userApi.getUserData().then(data => {
-        dispatch(setUser(data))
-        dispatch(setIsAuth(true))
-      })
+      dispatch(getUserDataAction())
     })

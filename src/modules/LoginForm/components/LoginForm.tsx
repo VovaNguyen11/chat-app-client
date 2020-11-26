@@ -1,15 +1,16 @@
 import React, {useEffect} from "react"
 import {Link, RouteComponentProps} from "react-router-dom"
 import {useSelector} from "react-redux"
+
 import {FormikProps} from "formik"
 import {Form, Input, FormItem} from "formik-antd"
-
 import {MailOutlined, LockOutlined} from "@ant-design/icons"
+
 import {Button, Block} from "components"
 
-import {ILoginFormValues} from "../../types"
-
 import {RootState} from "store/reducers"
+import {ILoginFormValues} from "types"
+
 
 interface LoginFormContainerProps
   extends RouteComponentProps<any>,

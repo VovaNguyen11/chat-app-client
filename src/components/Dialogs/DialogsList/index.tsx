@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, memo} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import {Empty, Spin} from "antd"
 import _orderBy from "lodash/orderBy"
 
 import {IDialog} from "types"
 import {RootState} from "store/reducers"
-import {fetchDialogsAction, setCurrentDialogAction} from "store/actions/dialogs"
+import {fetchDialogsAction} from "store/actions/dialogs"
 
 import {DialogsItem} from "components"
 
@@ -17,27 +17,36 @@ interface DialogsListProps {
 
 const DialogsList = ({searchValue}: DialogsListProps) => {
   const dispatch = useDispatch()
-  const {dialogs, isLoading} = useSelector(({dialogs}: RootState) => ({
-    dialogs: dialogs.items,
-    isLoading: dialogs.isLoading,
-  }))
+  const {dialogs, isLoading, user} = useSelector(
+    ({dialogs, user}: RootState) => ({
+      dialogs: dialogs.items,
+      isLoading: dialogs.isLoading,
+      user: user.data,
+    })
+  )
 
-  const [filteredDialogs] = useState<Array<IDialog>>(dialogs)
+  const [filteredDialogs, setFilteredDialogs] = useState<Array<IDialog>>([])
 
   useEffect(() => {
     dispatch(fetchDialogsAction())
   }, [dispatch])
 
   useEffect(() => {
+    setFilteredDialogs(dialogs)
     if (searchValue) {
-      filteredDialogs.filter(
-        dialog =>
-          dialog.message.partner.fullName
-            .toLowerCase()
-            .indexOf(searchValue.toLowerCase()) >= 0
+      setFilteredDialogs(f =>
+        f.filter(
+          dialog =>
+            dialog.partner.fullName
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) >= 0 ||
+            dialog.author.fullName
+              .toLowerCase()
+              .indexOf(searchValue.toLowerCase()) >= 0
+        )
       )
     }
-  }, [searchValue, filteredDialogs])
+  }, [searchValue, dialogs])
 
   return (
     <div className="dialogs">
@@ -46,20 +55,26 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
           <Spin tip="Loading..." />
         </div>
       ) : filteredDialogs.length ? (
-        _orderBy(filteredDialogs, d => new Date(d.message.createdAt), [
+        _orderBy(filteredDialogs, d => new Date(d.lastMessage.createdAt!), [
           "desc",
         ]).map(d => (
           <DialogsItem
             key={d._id}
             dialog={d}
-            setCurrentDialogAction={setCurrentDialogAction}
+            isMe={user?._id === `${d.lastMessage.user}`}
+            partner={user?._id === d.author._id ? d.partner : d.author}
           />
         ))
       ) : (
-        <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="No results" />
+        <div className="dialogs--empty">
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description="No results"
+          />
+        </div>
       )}
     </div>
   )
 }
 
-export default DialogsList
+export default memo(DialogsList)

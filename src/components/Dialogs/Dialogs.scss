@@ -5,8 +5,8 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  @include flex-centered;
-  
+
+  &--empty,
   &--loading {
     @include flex-centered;
     height: 100%;

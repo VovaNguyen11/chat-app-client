@@ -1,13 +1,13 @@
 import React from "react"
 import {Link} from "react-router-dom"
+
 import {FormikProps} from "formik"
 import {Form, Input, FormItem} from "formik-antd"
+import {MailOutlined, LockOutlined, UserOutlined} from "@ant-design/icons"
 
 import {Button, Block} from "components"
 
-import {IRegistrationFormValues} from "../../types"
-
-import {MailOutlined, LockOutlined, UserOutlined} from "@ant-design/icons"
+import {IRegistrationFormValues} from "types"
 
 const RegisterForm = (props: FormikProps<IRegistrationFormValues>) => {
   const {values, handleSubmit, handleChange, handleBlur, isSubmitting} = props

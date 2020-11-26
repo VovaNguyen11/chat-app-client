@@ -4,7 +4,7 @@ import "emoji-mart/css/emoji-mart.css"
 import {SmileOutlined} from "@ant-design/icons"
 
 import {Button} from "components"
-import UseOutsideClick from "hooks/useOutsideClick"
+import UseOutsideClick from "utils/hooks/useOutsideClick"
 
 import "./EmojiPicker.scss"
 

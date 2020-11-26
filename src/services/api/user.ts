@@ -1,6 +1,6 @@
 import {POST, GET} from "../network.service"
 
-import {ILoginFormValues, IRegistrationFormValues} from "modules/types"
+import {ILoginFormValues, IRegistrationFormValues} from "types"
 
 const userApi = {
   signUp(postData: IRegistrationFormValues) {

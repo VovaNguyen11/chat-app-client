@@ -10,7 +10,6 @@ export interface IUser {
 
 export interface IUserState {
   data: IUser | null
-  token: string
   isAuth: boolean
 }
 

@@ -2,7 +2,7 @@ import {RootState} from "store/reducers"
 import {ThunkAction} from "redux-thunk"
 import {Action} from "redux"
 
-import {dialogsApi} from "utils/services/api"
+import {dialogsApi} from "services/api"
 
 import {IDialog} from "types"
 

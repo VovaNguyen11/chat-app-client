@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import {Link, useLocation} from "react-router-dom"
 import {Result, Spin} from "antd"
 
-import {userApi} from "utils/services/api"
+import {userApi} from "services/api"
 
 import {Block} from "components"
 

@@ -4,7 +4,6 @@ import {IUserState, UserActionType} from "types"
 const initialState: IUserState = {
   data: null,
   isAuth: !!window.localStorage.token,
-  token: window.localStorage.token,
 }
 
 const user = (state = initialState, action: UserActionType): IUserState => {
@@ -13,7 +12,6 @@ const user = (state = initialState, action: UserActionType): IUserState => {
       return {
         data: action.payload,
         isAuth: true,
-        token: window.localStorage.token,
       }
     case SET_IS_AUTH:
       return {

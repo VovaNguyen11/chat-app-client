@@ -1,29 +1,38 @@
-import React from "react"
-import {EllipsisOutlined} from "@ant-design/icons"
+import React, {useMemo} from "react"
+import {useSelector} from "react-redux"
+import {RootState} from "store/reducers"
 
-import {ChatInput, Button, MessagesList} from "components"
+import {ChatInput, StatusBar, MessagesList} from "components"
 
 import "./MessagesHistory.scss"
 
 const MessagesHistory = () => {
+  const {dialogs, currentDialogId, user} = useSelector(
+    ({dialogs, user}: RootState) => ({
+      dialogs: dialogs.items,
+      currentDialogId: dialogs.currentDialogId,
+      user: user.data,
+    })
+  )
+
+  const partner = useMemo(() => {
+    const currentDialog = dialogs.find(d => d._id === currentDialogId)
+
+    if (currentDialog && user) {
+      return currentDialog.author._id === user._id
+        ? currentDialog.partner
+        : currentDialog.author
+    }
+  }, [dialogs, currentDialogId, user])
+
   return (
     <div className="messages__history">
       <div className="messages__history-header">
-        <div className="messages__history-status-bar">
-          <h3>Вова</h3>
-          <span>Онлайн</span>
-        </div>
-        <Button
-          onClick={() => console.log("Status Bar options")}
-          type="link"
-          shape="circle"
-          icon={<EllipsisOutlined />}
-        />
+        <StatusBar partner={partner} />
       </div>
       <div className="messages__history-content">
         <MessagesList />
       </div>
-
       <div className="messages__history-footer">
         <ChatInput />
       </div>

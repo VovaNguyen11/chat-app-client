@@ -1,11 +1,14 @@
 import React, {memo} from "react"
 import classNames from "classnames"
 import {Link, useParams} from "react-router-dom"
+import {useDispatch} from "react-redux"
+
 import {Avatar, IconCkecked} from "components"
 
 import {getMessageTime} from "utils/helpers"
 
-import {IDialog} from "types"
+import {IDialog, IUser} from "types"
+import {setCurrentDialogAction} from "store/actions/dialogs"
 
 import "../Dialogs.scss"
 
@@ -14,39 +17,37 @@ interface MatchParams {
 }
 
 interface DialogItemProps {
-  setCurrentDialogAction: (id: string) => void
   dialog: IDialog
+  isMe: boolean
+  partner: IUser
 }
 
-const DialogItem = ({
-  dialog,
-
-  setCurrentDialogAction,
-}: DialogItemProps) => {
-  const {isMe, isChecked, message, _id} = dialog
+const DialogItem = ({dialog, isMe, partner}: DialogItemProps) => {
+  const {lastMessage, _id} = dialog
   const {id} = useParams<MatchParams>()
+  const dispatch = useDispatch()
 
   return (
     <Link
       to={`/dialogs/${_id}`}
       className={classNames("dialogs__item", {
-        "dialogs__item--online": message.partner.isOnline,
+        "dialogs__item--online": partner.isOnline,
         "dialogs__item--active": id === _id,
       })}
-      onClick={() => setCurrentDialogAction(_id)}
+      onClick={() => dispatch(setCurrentDialogAction(_id))}
     >
       <div className="dialogs__item-avatar">
-        <Avatar user={message.partner} />
+        <Avatar user={partner} />
       </div>
       <div className="dialogs__item-content">
         <div className="dialogs__item-content-top">
-          <h3>{message.partner.fullName}</h3>
-          <span>{getMessageTime(new Date(message.createdAt))}</span>
+          <h3>{partner.fullName}</h3>
+          <span>{getMessageTime(new Date(lastMessage.createdAt!))}</span>
         </div>
         <div className="dialogs__item-content-bottom">
-          <p>{message.text}</p>
+          <p>{lastMessage.text}</p>
           {isMe ? (
-            <IconCkecked isChecked={isChecked} />
+            <IconCkecked isChecked={lastMessage.isChecked} />
           ) : (
             <div className="dialogs__item-count">3</div>
           )}

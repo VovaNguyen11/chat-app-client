@@ -4,17 +4,13 @@ import {
   SET_DIALOGS_LOADING,
 } from "store/actions_constants"
 
-import {IUser} from "types"
+import {IUser, IMessage} from "types"
 
 export interface IDialog {
   _id: string
-  message: {
-    text: string
-    createdAt: string
-    partner: IUser
-  }
-  isMe?: boolean
-  isChecked: boolean
+  lastMessage: IMessage
+  partner: IUser
+  author: IUser
 }
 
 export interface IDialogsState {

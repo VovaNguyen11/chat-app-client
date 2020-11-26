@@ -2,7 +2,7 @@ import {RootState} from "store/reducers"
 import {ThunkAction} from "redux-thunk"
 import {Action} from "redux"
 
-import {messagesApi} from "utils/services/api"
+import {messagesApi} from "services/api"
 
 import {IMessage} from "types"
 
