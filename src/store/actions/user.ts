@@ -33,10 +33,11 @@ export const getUserDataAction = (): AppThunk => (dispatch): Promise<any> =>
       dispatch(setUser(data))
     })
     .catch(err => {
-      if (err.response.status === 403) {
-        dispatch(setIsAuth(false))
-        delete window.localStorage.token
-      }
+      // throw new Error(err)
+      // if (err.response.status === 403) {
+      //   dispatch(setIsAuth(false))
+      //   delete window.localStorage.token
+      // }
     })
 
 export const userLoginAction = (postData: ILoginFormValues): AppThunk => (

@@ -6,7 +6,12 @@ import {messagesApi} from "services/api"
 
 import {IMessage} from "types"
 
-import {SET_MESSAGES, SET_MESSAGES_LOADING} from "../actions_constants"
+import {
+  SET_MESSAGES,
+  SET_MESSAGES_LOADING,
+  ADD_MESSAGE,
+  REMOVE_MESSAGE,
+} from "../actions_constants"
 
 type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
@@ -20,10 +25,14 @@ const setMessages = (data: IMessage[]) => ({
   payload: data,
 })
 
+
+
 const setMessagesLoading = (value: boolean) => ({
   type: SET_MESSAGES_LOADING,
   payload: value,
 })
+
+//Refactiong
 
 export const fetchMessagesAction = (
   currentDialogId: string
@@ -36,3 +45,15 @@ export const fetchMessagesAction = (
       throw err
     })
 }
+
+export const addMessageAction = (message: IMessage) => ({
+  type: ADD_MESSAGE,
+  payload: message,
+})
+
+export const removeMessageAction = (id: string) => ({
+  type: REMOVE_MESSAGE,
+  payload: id,
+})
+
+

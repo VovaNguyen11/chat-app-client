@@ -1,4 +1,9 @@
-import {SET_MESSAGES, SET_MESSAGES_LOADING} from "store/actions_constants"
+import {
+  ADD_MESSAGE,
+  REMOVE_MESSAGE,
+  SET_MESSAGES,
+  SET_MESSAGES_LOADING,
+} from "store/actions_constants"
 
 import {IMessagesState, MessagesActionType} from "types"
 
@@ -7,7 +12,7 @@ const initialState: IMessagesState = {
   isLoading: false,
 }
 
-const dialogs = (
+const messages = (
   state = initialState,
   action: MessagesActionType
 ): IMessagesState => {
@@ -16,6 +21,16 @@ const dialogs = (
       return {
         items: action.payload,
         isLoading: false,
+      }
+    case ADD_MESSAGE:
+      return {
+        ...state,
+        items: [...state.items, action.payload],
+      }
+    case REMOVE_MESSAGE:
+      return {
+        ...state,
+        items: state.items.filter(message => message._id !== action.payload),
       }
     case SET_MESSAGES_LOADING:
       return {
@@ -27,4 +42,4 @@ const dialogs = (
   }
 }
 
-export default dialogs
+export default messages

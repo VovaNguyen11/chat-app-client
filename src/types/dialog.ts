@@ -11,6 +11,7 @@ export interface IDialog {
   lastMessage: IMessage
   partner: IUser
   author: IUser
+  createdAt: string
 }
 
 export interface IDialogsState {

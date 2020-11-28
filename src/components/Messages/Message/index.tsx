@@ -2,8 +2,11 @@ import React from "react"
 import classNames from "classnames"
 import reactStringReplace from "react-string-replace"
 import {Emoji} from "emoji-mart"
+import {messagesApi} from "services/api"
 
-import {Avatar, Time, IconCkecked, MessageAudio} from "components"
+import {Time, IconCkecked, MessageAudio, Button} from "components"
+import {Popover} from "antd"
+import {EllipsisOutlined} from "@ant-design/icons"
 
 import {isAudio} from "utils/helpers"
 
@@ -23,21 +26,29 @@ const renderAttachment = (item: IAttachment) => {
   }
 }
 
+// interface MessageProps extends IMessage {
+
+// }
+
 const Message = ({
   user,
+  _id,
   text,
   createdAt,
-  isMe,
   isChecked,
-  isTyping,
   attachments,
+  isMe,
 }: IMessage) => {
+  const onRemoveMessage = () => {
+    messagesApi.removeMessage(_id)
+  }
+
   return (
     <div
       className={classNames(
         "message",
         {"message--is-me": isMe},
-        {"message--is-typing": isTyping},
+        // {"message--is-typing": isTyping},
         {
           "message--image":
             attachments &&
@@ -48,11 +59,11 @@ const Message = ({
         {"message--audio": attachments && isAudio(attachments)}
       )}
     >
-      <div className="message__avatar">
+      {/* <div className="message__avatar">
         <Avatar user={user} />
-      </div>
+      </div> */}
       <div className="message__content">
-        {(text || isTyping) && (
+        {(text || "isTyping") && (
           <div className="message__bubble">
             {text && (
               <p className="message__text">
@@ -61,7 +72,8 @@ const Message = ({
                 ))}
               </p>
             )}
-            {isTyping && (
+            {/* {isTyping && ( */}
+            {false && (
               <div className="message__typing">
                 <span />
                 <span />
@@ -75,15 +87,29 @@ const Message = ({
             {attachments.map(item => renderAttachment(item))}
           </div>
         )}
-        {createdAt && (
-          <div className="message__date">
-            <Time date={createdAt} />
-          </div>
+        {isMe && (
+          <>
+            <div className="message__status">
+              <IconCkecked isChecked={isChecked} />
+            </div>
+            <Popover
+              content={
+                <Button type="text" onClick={() => onRemoveMessage()}>
+                  Remove message
+                </Button>
+              }
+              trigger="click"
+            >
+              <div className="message__icon-actions">
+                <Button type="text" icon={<EllipsisOutlined />} />
+              </div>
+            </Popover>
+          </>
         )}
       </div>
-      {isMe && (
-        <div className="message__status">
-          <IconCkecked isChecked={isChecked} />
+      {createdAt && (
+        <div className="message__date">
+          <Time date={createdAt} />
         </div>
       )}
     </div>

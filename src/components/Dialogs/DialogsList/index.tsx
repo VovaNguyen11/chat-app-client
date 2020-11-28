@@ -1,7 +1,8 @@
 import React, {useEffect, useState, memo} from "react"
 import {useSelector, useDispatch} from "react-redux"
-import {Empty, Spin} from "antd"
+import {Empty} from "antd"
 import _orderBy from "lodash/orderBy"
+import socket from "services/socket.io"
 
 import {IDialog} from "types"
 import {RootState} from "store/reducers"
@@ -17,10 +18,10 @@ interface DialogsListProps {
 
 const DialogsList = ({searchValue}: DialogsListProps) => {
   const dispatch = useDispatch()
-  const {dialogs, isLoading, user} = useSelector(
+  const {dialogs, user, currentDialogId} = useSelector(
     ({dialogs, user}: RootState) => ({
+      currentDialogId: dialogs.currentDialogId,
       dialogs: dialogs.items,
-      isLoading: dialogs.isLoading,
       user: user.data,
     })
   )
@@ -32,37 +33,51 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
   }, [dispatch])
 
   useEffect(() => {
-    setFilteredDialogs(dialogs)
-    if (searchValue) {
-      setFilteredDialogs(f =>
-        f.filter(
-          dialog =>
-            dialog.partner.fullName
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase()) >= 0 ||
-            dialog.author.fullName
-              .toLowerCase()
-              .indexOf(searchValue.toLowerCase()) >= 0
+    if (searchValue && dialogs.length) {
+      setFilteredDialogs(
+        dialogs.filter(dialog =>
+          user?._id === dialog.author._id
+            ? dialog.partner.fullName
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) >= 0
+            : dialog.author.fullName
+                .toLowerCase()
+                .indexOf(searchValue.toLowerCase()) >= 0
         )
       )
+    } else {
+      setFilteredDialogs(dialogs)
     }
-  }, [searchValue, dialogs])
+  }, [searchValue, dialogs, user])
+
+  useEffect(() => {
+    socket.on("NEW_DIALOG", (dialog: IDialog) => {
+      dispatch(fetchDialogsAction())
+      // if (dialog.author._id === user?._id) {
+      //   dispatch(setCurrentDialogAction(dialog._id))
+      // }
+    })
+    socket.on("UPDATE_LAST_MESSAGE", () => dispatch(fetchDialogsAction()))
+    socket.on("NEW_MESSAGE", () => dispatch(fetchDialogsAction()))
+  }, [dispatch])
 
   return (
     <div className="dialogs">
-      {isLoading ? (
-        <div className="dialogs--loading">
-          <Spin tip="Loading..." />
-        </div>
-      ) : filteredDialogs.length ? (
-        _orderBy(filteredDialogs, d => new Date(d.lastMessage.createdAt!), [
-          "desc",
-        ]).map(d => (
+      {filteredDialogs.length ? (
+        _orderBy(
+          filteredDialogs,
+          d =>
+            d.lastMessage
+              ? new Date(d.lastMessage.createdAt!)
+              : new Date(d.createdAt),
+          ["desc"]
+        ).map(d => (
           <DialogsItem
             key={d._id}
             dialog={d}
-            isMe={user?._id === `${d.lastMessage.user}`}
+            isMe={user?._id === `${d.lastMessage?.user}`}
             partner={user?._id === d.author._id ? d.partner : d.author}
+            currentDialogId={currentDialogId}
           />
         ))
       ) : (

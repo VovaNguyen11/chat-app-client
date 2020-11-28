@@ -7,6 +7,7 @@ import {dialogsApi} from "services/api"
 import {IDialog} from "types"
 
 import {
+  ADD_DIALOG,
   SET_DIALOGS,
   SET_CURRENT_DIALOG,
   SET_DIALOGS_LOADING,
@@ -32,6 +33,11 @@ export const setCurrentDialogAction = (id: string) => ({
 export const setDialogsLoadingAction = (value: boolean) => ({
   type: SET_DIALOGS_LOADING,
   payload: value,
+})
+
+export const addDialogAction = () => ({
+  type: ADD_DIALOG,
+  // payload: ,
 })
 
 export const fetchDialogsAction = (): AppThunk => dispatch => {

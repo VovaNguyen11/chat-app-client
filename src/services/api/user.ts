@@ -15,6 +15,9 @@ const userApi = {
   getUserData() {
     return GET("/user/me")
   },
+  findUsers(query: string) {
+    return GET(`/user/find?query=${query}`)
+  },
 }
 
 export default userApi

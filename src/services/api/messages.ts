@@ -1,5 +1,5 @@
 import {IMessage} from "types"
-import {GET} from "../network.service"
+import {GET, POST, DELETE} from "../network.service"
 
 const messagesApi = {
   async getMessages(currentDialogId: string): Promise<any> {
@@ -10,6 +10,9 @@ const messagesApi = {
       return error
     }
   },
+  sendMessage: (text: string, dialogId: string) =>
+    POST("/messages", {text, dialogId}),
+  removeMessage: (messageId: string) => DELETE(`/messages/${messageId}`),
 }
 
 export default messagesApi

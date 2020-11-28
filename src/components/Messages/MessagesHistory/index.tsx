@@ -16,7 +16,8 @@ const MessagesHistory = () => {
   )
 
   const partner = useMemo(() => {
-    const currentDialog = dialogs.find(d => d._id === currentDialogId)
+    const currentDialog =
+      dialogs.length && dialogs.find(d => d._id === currentDialogId)
 
     if (currentDialog && user) {
       return currentDialog.author._id === user._id

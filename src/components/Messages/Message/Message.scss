@@ -4,13 +4,16 @@
 .message {
   $self: &;
   display: flex;
+  flex-direction: column;
 
   &:not(:last-of-type) {
     margin-bottom: 15px;
   }
 
   &--is-me {
-    flex-direction: row-reverse;
+    #{$self}__content {
+      flex-direction: row-reverse;
+    }
     #{$self}__avatar {
       margin: 0 0 25px 15px;
     }
@@ -52,6 +55,9 @@
     }
   }
 
+  &__content {
+    display: flex;
+  }
   &__avatar {
     width: 40px;
     height: 40px;
@@ -61,12 +67,13 @@
   }
 
   &__status {
-    align-self: flex-end;
-    margin: 0 10px 25px 0;
+    align-self: center;
+    margin: 20px 7px 0px 0;
     img {
       display: block;
     }
   }
+
   &__bubble {
     display: inline-block;
     max-width: 320px;

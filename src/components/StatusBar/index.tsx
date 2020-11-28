@@ -1,10 +1,8 @@
 import React from "react"
 
 import {Button} from "components"
-
-import {IUser} from "types"
-
 import {EllipsisOutlined} from "@ant-design/icons"
+import {IUser} from "types"
 
 import "./StatusBar.scss"
 
