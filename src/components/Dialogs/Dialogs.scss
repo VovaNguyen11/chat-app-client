@@ -48,7 +48,8 @@
       transition: 0.3s ease-in-out;
       #{$item}-content {
         span,
-        h3 {
+        h3,
+        p {
           transition: 0.3s ease-in-out;
           color: #fff;
         }
@@ -91,7 +92,6 @@
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
-          opacity: 0.7;
         }
       }
     }

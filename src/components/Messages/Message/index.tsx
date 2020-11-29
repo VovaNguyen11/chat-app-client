@@ -1,12 +1,10 @@
 import React from "react"
-import classNames from "classnames"
-import reactStringReplace from "react-string-replace"
-import {Emoji} from "emoji-mart"
+import classNames from "classnames" 
 import {messagesApi} from "services/api"
 
 import {Time, IconCkecked, MessageAudio, Button} from "components"
-import {Popover} from "antd"
-import {EllipsisOutlined} from "@ant-design/icons"
+import {Popover, Modal} from "antd"
+import {EllipsisOutlined, ExclamationCircleOutlined} from "@ant-design/icons"
 
 import {isAudio} from "utils/helpers"
 
@@ -26,6 +24,18 @@ const renderAttachment = (item: IAttachment) => {
   }
 }
 
+const showConfirm = (_id: string, e: React.MouseEvent) => {
+  e.stopPropagation()
+  Modal.confirm({
+    title: "Are you sure you want to delete this message?",
+    icon: <ExclamationCircleOutlined />,
+    maskClosable: true,
+    zIndex: 1031,
+    onOk() {
+      messagesApi.removeMessage(_id)
+    },
+  })
+}
 // interface MessageProps extends IMessage {
 
 // }
@@ -39,8 +49,9 @@ const Message = ({
   attachments,
   isMe,
 }: IMessage) => {
-  const onRemoveMessage = () => {
-    messagesApi.removeMessage(_id)
+  const onRemoveMessage = () => (e: React.MouseEvent) => {
+    // e.stopPropagation()
+    showConfirm(_id, e)
   }
 
   return (
@@ -66,11 +77,12 @@ const Message = ({
         {(text || "isTyping") && (
           <div className="message__bubble">
             {text && (
-              <p className="message__text">
-                {reactStringReplace(text, /:(.+?):/g, (match, i) => (
+              <div className="message__text">
+                {/* {reactStringReplace(text, /:(.+?):/g, (match, i) => (
                   <Emoji key={i} emoji={match} set="apple" size={16} />
-                ))}
-              </p>
+                ))} */}
+                {text}
+              </div>
             )}
             {/* {isTyping && ( */}
             {false && (
@@ -93,8 +105,9 @@ const Message = ({
               <IconCkecked isChecked={isChecked} />
             </div>
             <Popover
+              placement="left"
               content={
-                <Button type="text" onClick={() => onRemoveMessage()}>
+                <Button type="text" onClick={onRemoveMessage()}>
                   Remove message
                 </Button>
               }

@@ -30,7 +30,7 @@ const ChatInput = () => {
   return (
     <div className="chat-input">
       <div className="chat-input__emoji">
-        <EmojiPicker />
+        <EmojiPicker setInputValue={setInputValue} />
       </div>
       <Input.TextArea
         size="middle"

@@ -1,14 +1,11 @@
 import React, {memo} from "react"
 import classNames from "classnames"
 import {Link} from "react-router-dom"
-import {useDispatch} from "react-redux"
+import {getMessageTime} from "utils/helpers"
 
 import {Avatar, IconCkecked} from "components"
 
-import {getMessageTime} from "utils/helpers"
-
 import {IDialog, IUser} from "types"
-import {setCurrentDialogAction} from "store/actions/dialogs"
 
 import "../Dialogs.scss"
 
@@ -26,7 +23,6 @@ const DialogItem = ({
   currentDialogId,
 }: DialogItemProps) => {
   const {lastMessage, _id, createdAt} = dialog
-  const dispatch = useDispatch()
 
   return (
     <Link
@@ -35,7 +31,6 @@ const DialogItem = ({
         "dialogs__item--online": partner.isOnline,
         "dialogs__item--active": currentDialogId === _id,
       })}
-      onClick={() => dispatch(setCurrentDialogAction(_id))}
     >
       <div className="dialogs__item-avatar">
         <Avatar user={partner} />

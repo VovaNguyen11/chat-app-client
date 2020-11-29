@@ -6,7 +6,7 @@ import socket from "services/socket.io"
 
 import {IDialog} from "types"
 import {RootState} from "store/reducers"
-import {fetchDialogsAction} from "store/actions/dialogs"
+import {fetchDialogsAction, setCurrentDialogAction} from "store/actions/dialogs"
 
 import {DialogsItem} from "components"
 
@@ -53,13 +53,14 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
   useEffect(() => {
     socket.on("NEW_DIALOG", (dialog: IDialog) => {
       dispatch(fetchDialogsAction())
-      // if (dialog.author._id === user?._id) {
-      //   dispatch(setCurrentDialogAction(dialog._id))
-      // }
+      if (user && dialog.author._id === user._id) {
+        console.log(user)
+        dispatch(setCurrentDialogAction(dialog._id))
+      }
     })
     socket.on("UPDATE_LAST_MESSAGE", () => dispatch(fetchDialogsAction()))
     socket.on("NEW_MESSAGE", () => dispatch(fetchDialogsAction()))
-  }, [dispatch])
+  }, [dispatch, user])
 
   return (
     <div className="dialogs">

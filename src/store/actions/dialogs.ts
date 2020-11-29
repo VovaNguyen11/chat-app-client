@@ -25,7 +25,7 @@ const setDialogs = (data: IDialog[]) => ({
   payload: data,
 })
 
-export const setCurrentDialogAction = (id: string) => ({
+export const setCurrentDialogAction = (id: string | undefined) => ({
   type: SET_CURRENT_DIALOG,
   payload: id,
 })
