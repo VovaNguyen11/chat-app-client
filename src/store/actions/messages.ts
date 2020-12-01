@@ -25,14 +25,10 @@ const setMessages = (data: IMessage[]) => ({
   payload: data,
 })
 
-
-
 const setMessagesLoading = (value: boolean) => ({
   type: SET_MESSAGES_LOADING,
   payload: value,
 })
-
-//Refactiong
 
 export const fetchMessagesAction = (
   currentDialogId: string
@@ -55,5 +51,3 @@ export const removeMessageAction = (id: string) => ({
   type: REMOVE_MESSAGE,
   payload: id,
 })
-
-

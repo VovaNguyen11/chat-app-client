@@ -1,5 +1,5 @@
 import React from "react"
-import classNames from "classnames" 
+import classNames from "classnames"
 import {messagesApi} from "services/api"
 
 import {Time, IconCkecked, MessageAudio, Button} from "components"
@@ -24,8 +24,7 @@ const renderAttachment = (item: IAttachment) => {
   }
 }
 
-const showConfirm = (_id: string, e: React.MouseEvent) => {
-  e.stopPropagation()
+const showConfirm = (_id: string) => {
   Modal.confirm({
     title: "Are you sure you want to delete this message?",
     icon: <ExclamationCircleOutlined />,
@@ -49,11 +48,6 @@ const Message = ({
   attachments,
   isMe,
 }: IMessage) => {
-  const onRemoveMessage = () => (e: React.MouseEvent) => {
-    // e.stopPropagation()
-    showConfirm(_id, e)
-  }
-
   return (
     <div
       className={classNames(
@@ -74,7 +68,8 @@ const Message = ({
         <Avatar user={user} />
       </div> */}
       <div className="message__content">
-        {(text || "isTyping") && (
+        {/* {(text || "isTyping") && ( */}
+        {text && (
           <div className="message__bubble">
             {text && (
               <div className="message__text">
@@ -107,7 +102,7 @@ const Message = ({
             <Popover
               placement="left"
               content={
-                <Button type="text" onClick={onRemoveMessage()}>
+                <Button type="text" onClick={() => showConfirm(_id)}>
                   Remove message
                 </Button>
               }

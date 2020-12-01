@@ -1,3 +1,4 @@
+import {RcFile} from "antd/lib/upload/interface"
 import {IMessage} from "types"
 import {GET, POST, DELETE} from "../network.service"
 
@@ -10,8 +11,11 @@ const messagesApi = {
       return error
     }
   },
-  sendMessage: (text: string, dialogId: string) =>
-    POST("/messages", {text, dialogId}),
+  sendMessage: (text: string, dialogId: string, attachments: RcFile[]) => {
+    console.log(attachments)
+
+    POST("/messages", {text, dialogId, attachments})
+  },
   removeMessage: (messageId: string) => DELETE(`/messages/${messageId}`),
 }
 
