@@ -5,9 +5,10 @@
   flex-wrap: wrap;
   align-items: center;
   position: relative;
+  min-height: 50px;
 
   .ant-input {
-    width: 80%;
+    flex: 1;
     resize: none;
     height: 100%;
     color: $dark-font-color;
@@ -21,5 +22,49 @@
 
   &__actions {
     @include flex-s-between;
+  }
+
+  &--recording {
+    flex: 1;
+    text-align: center;
+
+    &-bubble {
+      display: inline-block;
+      position: relative;
+      height: 10px;
+      width: 10px;
+      background-color: #f56b6b;
+      border-radius: 30px;
+      margin-right: 8px;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 10px;
+        width: 10px;
+        background-color: rgba(245, 107, 107, 0.5);
+        border-radius: 30px;
+        animation: wave-animation 1.3s ease-in-out infinite;
+        transition: transform 0.15s ease-in-out;
+      }
+    }
+  }
+
+  .button.ant-btn-lg {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }

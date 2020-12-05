@@ -7,7 +7,7 @@ import "./Button.scss";
 
 interface ButtonProps extends BaseButtonProps {
   className?: string;
-  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+  onClick?: (event: any) => void;
   children?: React.ReactNode;
 }
 

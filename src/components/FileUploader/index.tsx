@@ -1,62 +1,60 @@
-import React, {useState, useEffect} from "react"
-import {Upload, Modal} from "antd"
-import {UploadFile, RcFile} from "antd/lib/upload/interface"
+import React from "react"
+import {RcFile, RcCustomRequestOptions} from "antd/lib/upload/interface"
+import {attachmentsApi} from "services/api"
 
-import "./FileUploader.scss"
-
-function getBase64(file: any) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result)
-    reader.onerror = error => reject(error)
-  })
-}
+import {Button} from "components"
+import {Upload, message} from "antd"
+import {PaperClipOutlined} from "@ant-design/icons"
 
 interface FileUploaderProps {
-  attachments: RcFile[]
-  handleAttachmentRemove: (
-    file: UploadFile
-  ) => boolean | void | Promise<boolean>
+  setAttachments: React.Dispatch<React.SetStateAction<RcFile[]>>
 }
 
-const FileUploader = ({
-  attachments,
-  handleAttachmentRemove,
-}: FileUploaderProps) => {
-  const [previewVisible, setPreviewVisible] = useState(false)
-  const [previewImage, setPreviewImage] = useState("")
-  const [fileList, setFileList] = useState<UploadFile<any>[]>([])
+const FileUploader = ({setAttachments}: FileUploaderProps) => {
+  const UploadProps = {
+    multiple: true,
+    showUploadList: false,
+    beforeUpload(file: RcFile) {
+      const acceptTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"]
+      if (!acceptTypes.includes(file.type)) {
+        message.error("You can only upload JPG|JPEG|PNG|GIF files!",2000)
+      }
+      return !!acceptTypes.includes(file.type)
+    },
 
-  useEffect(() => {
-    setFileList(attachments)
-  }, [attachments])
+    async customRequest({file, filename}: RcCustomRequestOptions) {
+      setAttachments((prevState: RcFile[]) => [
+        ...prevState,
+        {...file, status: "uploading"},
+      ])
 
-  const handleCancel = () => setPreviewVisible(false)
+      const res = await attachmentsApi.upload(file)
 
-  const handlePreview = async (file: any) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj)
-    }
-    setPreviewImage(file.url || file.preview)
-    setPreviewVisible(true)
+      setAttachments((prevState: RcFile[]) =>
+        prevState.map(f => {
+          if (f.uid === file.uid) {
+            return {
+              ...res,
+              uid: f.uid,
+              url: res.url,
+              status: "success",
+              name: filename,
+            }
+          } else return f
+        })
+      )
+    },
   }
 
-  const handleChange = ({fileList}: any) => setFileList(fileList)
-
   return (
-    <div className="file-uploader">
-      <Upload
-        listType="picture-card"
-        fileList={fileList}
-        onPreview={handlePreview}
-        onChange={handleChange}
-        onRemove={handleAttachmentRemove}
+    <Upload {...UploadProps} name="file">
+      <Button
+        type="link"
+        size="large"
+        shape="circle"
+        icon={<PaperClipOutlined />}
       />
-      <Modal visible={previewVisible} footer={null} onCancel={handleCancel}>
-        <img alt="example" style={{width: "100%"}} src={previewImage} />
-      </Modal>
-    </div>
+    </Upload>
   )
 }
 

@@ -1,7 +1,9 @@
 .emoji-picker {
   position: absolute;
-  bottom: 50px;
-  z-index: 1;
+  bottom: 35px;
+  z-index: 10;
+  right: 80px;
+
   .emoji-mart {
     &-bar {
       display: none;

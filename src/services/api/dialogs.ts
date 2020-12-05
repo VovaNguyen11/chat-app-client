@@ -3,12 +3,8 @@ import {GET, POST} from "../network.service"
 
 const dialogsApi = {
   getDialogs: async () => {
-    try {
-      const res: IDialog[] = await GET("/dialogs")
-      return res
-    } catch (error) {
-      return error
-    }
+    const res: IDialog[] = await GET("/dialogs")
+    return res
   },
   addDialog: (partnerId: string, text: string) => {
     return POST("/dialogs/create", {partner: partnerId, text})

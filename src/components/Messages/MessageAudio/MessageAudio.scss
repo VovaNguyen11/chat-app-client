@@ -10,7 +10,7 @@ audio {
   width: 250px;
   overflow: hidden;
   position: relative;
-  margin-bottom: 5px;
+  margin-left: 7px;
   &__info {
     position: relative;
     @include flex-s-between;

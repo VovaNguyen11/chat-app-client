@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useCallback} from "react"
+import React, {useEffect, useRef, useCallback, useState} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import classNames from "classnames"
 import socket from "services/socket.io"
@@ -11,7 +11,7 @@ import {
   removeMessageAction,
 } from "store/actions/messages"
 
-import {Spin, Empty} from "antd"
+import {Spin, Empty, Modal} from "antd"
 import {Message} from "components"
 
 import "./MessagesList.scss"
@@ -26,6 +26,8 @@ const MessagesList = () => {
       currentDialogId: dialogs.currentDialogId,
     })
   )
+
+  const [previewImage, setPreviewImage] = useState("")
 
   const messagesRef = useRef() as React.MutableRefObject<HTMLDivElement>
 
@@ -77,11 +79,23 @@ const MessagesList = () => {
         <Spin tip="Loading..." size="large" />
       ) : messages.length > 0 ? (
         messages.map(m => (
-          <Message {...m} isMe={user?._id === m.user._id} key={m._id} />
+          <Message
+            {...m}
+            isMe={user?._id === m.user._id}
+            key={m._id}
+            setPreviewImage={setPreviewImage}
+          />
         ))
       ) : (
         <Empty description="Dialog is empty" image={null} />
       )}
+      <Modal
+        visible={!!previewImage}
+        footer={null}
+        onCancel={() => setPreviewImage("")}
+      >
+        <img alt="Preview" style={{width: "100%"}} src={previewImage} />
+      </Modal>
     </div>
   )
 }

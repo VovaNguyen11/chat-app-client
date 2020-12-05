@@ -18,3 +18,24 @@
     flex-direction: column;
   }
 }
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(30, 85, 127, 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  // -ms-overflow-style: 3px; /* IE and Edge */
+  scrollbar-width: 3px; /* Firefox */
+  scrollbar-track-color: #f1f1f1;
+  scrollbar-color: #1e557f4d;
+}

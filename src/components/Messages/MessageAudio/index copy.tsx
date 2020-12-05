@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react"
+import React, {useEffect, useRef, useState} from "react"
 
 import {convertAudioTime} from "utils/helpers"
 
@@ -11,40 +11,49 @@ interface MessageAudioProps {
   audioSrc: string
 }
 
+var getDuration = function (url: string, next: any) {
+  var _player = new Audio(url)
+  _player.addEventListener("durationchange", function (e) {
+    if (this.duration !== Infinity) {
+      var duration = this.duration
+      _player.remove()
+      next(duration)
+    }
+  })
+}
+
 const MessageAudio = ({audioSrc}: MessageAudioProps) => {
   const audioRef = useRef() as React.MutableRefObject<HTMLAudioElement>
   const [isPlaying, setIsPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+
+  useEffect(() => {
+    const audioElem = audioRef.current
+    audioElem.addEventListener("ended", () => {
+      setIsPlaying(false)
+      setProgress(0)
+      setCurrentTime(audioElem.duration)
+    })
+  }, [])
 
   const togglePlay = () => {
     isPlaying ? audioRef.current.pause() : audioRef.current.play()
     setIsPlaying(prevState => !prevState)
   }
-
-  const handleLoadMetaData = async (e: any) => {
-    while (audioRef.current.duration === Infinity) {
-      await new Promise(r => setTimeout(r, 1000))
-      audioRef.current.currentTime = 10000000 * Math.random()
-    }
-    audioRef.current.currentTime = 0
-  }
-
-  const handleTimeUpdate = () => {
-    const duration = audioRef.current.duration
+  const handleTimeUpdate = async () => {
     setCurrentTime(audioRef.current.currentTime)
     setProgress(((audioRef.current.currentTime + 0.25) / duration) * 100)
-    if (audioRef.current.currentTime === 0) {
-      setProgress(0)
-      setCurrentTime(duration)
-    }
   }
 
-  const handleEnded = () => {
-    setIsPlaying(false)
-    setProgress(0)
-    setCurrentTime(audioRef.current.duration)
-  }
+  useEffect(() => {
+    getDuration(audioSrc, (duration: any) => {
+      setCurrentTime(duration)
+      setDuration(duration)
+    })
+    console.log(duration)
+  }, [audioSrc, duration])
 
   return (
     <div className="audio">
@@ -52,9 +61,7 @@ const MessageAudio = ({audioSrc}: MessageAudioProps) => {
         ref={audioRef}
         src={audioSrc}
         preload="auto"
-        onLoadedMetadataCapture={handleLoadMetaData}
         onTimeUpdate={handleTimeUpdate}
-        onEnded={handleEnded}
       />
       <div className="audio__progress" style={{width: progress + "%"}}></div>
       <div className="audio__info">

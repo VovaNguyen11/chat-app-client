@@ -1,6 +1,8 @@
 import React from "react"
 import classNames from "classnames"
+
 import {messagesApi} from "services/api"
+import {getMessageTime} from "utils/helpers"
 
 import {Time, IconCkecked, MessageAudio, Button} from "components"
 import {Popover, Modal} from "antd"
@@ -11,18 +13,6 @@ import {isAudio} from "utils/helpers"
 import {IAttachment, IMessage} from "types"
 
 import "./Message.scss"
-
-const renderAttachment = (item: IAttachment) => {
-  if (item.ext !== "webm") {
-    return (
-      <div key={item._id} className="message__attachments-item">
-        <img src={item.url} alt={item.fileName} />
-      </div>
-    )
-  } else {
-    return <MessageAudio key={item._id} audioSrc={item.url} />
-  }
-}
 
 const showConfirm = (_id: string) => {
   Modal.confirm({
@@ -35,9 +25,9 @@ const showConfirm = (_id: string) => {
     },
   })
 }
-// interface MessageProps extends IMessage {
-
-// }
+interface MessageProps extends IMessage {
+  setPreviewImage: React.Dispatch<React.SetStateAction<string>>
+}
 
 const Message = ({
   user,
@@ -47,7 +37,24 @@ const Message = ({
   isChecked,
   attachments,
   isMe,
-}: IMessage) => {
+  setPreviewImage,
+}: MessageProps) => {
+  const renderAttachment = (item: IAttachment) => {
+    if (item.ext !== "webm" && item.ext !== "wav") {
+      return (
+        <div
+          key={item._id}
+          className="message__attachments-item"
+          onClick={() => setPreviewImage(item.url)}
+        >
+          <img src={item.url} alt={item.fileName} />
+        </div>
+      )
+    } else {
+      return <MessageAudio key={item._id} audioSrc={item.url} />
+    }
+  }
+
   return (
     <div
       className={classNames(
@@ -117,7 +124,8 @@ const Message = ({
       </div>
       {createdAt && (
         <div className="message__date">
-          <Time date={createdAt} />
+          {getMessageTime(new Date(createdAt))}
+          {/* <Time date={createdAt} /> */}
         </div>
       )}
     </div>
