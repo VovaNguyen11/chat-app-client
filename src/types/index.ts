@@ -6,8 +6,4 @@ export type {
   IRegistrationFormValues,
   IFormErrors,
 } from "./form"
-export type {
-  IAttachment,
-  IAttachmentsState,
-  AttachmentsActionType,
-} from "./attachment"
+export type {IAttachment} from "./attachment"

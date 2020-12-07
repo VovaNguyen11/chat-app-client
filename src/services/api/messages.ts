@@ -3,13 +3,14 @@ import {IMessage} from "types"
 import {GET, POST, DELETE} from "../network.service"
 
 const messagesApi = {
-  async getMessages(currentDialogId: string): Promise<any> {
+  async getMessages(currentDialogId: string) {
     const res: IMessage[] = await GET(`/messages?dialogId=${currentDialogId}`)
     return res
   },
 
   sendMessage: (text: string, dialogId: string, attachments: RcFile[]) =>
     POST("/messages", {text, dialogId, attachments}),
+
   removeMessage: (messageId: string) => DELETE(`/messages/${messageId}`),
 }
 

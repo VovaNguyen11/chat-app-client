@@ -1,9 +1,12 @@
 import React, {useState} from "react"
+import {useSelector, useDispatch} from "react-redux"
 import {userApi, dialogsApi} from "services/api"
 
 import {Modal, Form, Select, Input} from "antd"
 import {Button} from "components"
 
+import {RootState} from "store/reducers"
+import {setCurrentDialogAction} from "store/actions/dialogs"
 import {IUser} from "types"
 
 import {FormOutlined} from "@ant-design/icons"
@@ -15,6 +18,9 @@ const AddFormModal = () => {
   const [selectedUserId, setSelectedUserId] = useState("")
   const [searchValue, setSearchValue] = useState("")
   const [messageText, setMessageText] = useState("")
+
+  const {user} = useSelector(({user}: RootState) => ({user: user.data}))
+  const dispatch = useDispatch()
 
   const options = users.map(user => (
     <Select.Option value={user._id} key={user._id}>
@@ -37,12 +43,14 @@ const AddFormModal = () => {
   const onMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setMessageText(e.target.value)
 
-  const onModalOk = () => {
+  const onModalOk = async () => {
     setIsLoading(true)
-    dialogsApi
-      .addDialog(selectedUserId, messageText)
-      .then(() => onCloseModal())
-      .finally(() => setIsLoading(false))
+    const data = await dialogsApi.addDialog(selectedUserId, messageText)
+    onCloseModal()
+    setIsLoading(false)
+    if (data.author === user?._id) {
+      dispatch(setCurrentDialogAction(data._id))
+    }
   }
 
   const onSearchUsers = async (searchValue: string) => {

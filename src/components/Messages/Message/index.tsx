@@ -4,7 +4,7 @@ import classNames from "classnames"
 import {messagesApi} from "services/api"
 import {getMessageTime} from "utils/helpers"
 
-import {Time, IconCkecked, MessageAudio, Button} from "components"
+import {IconCkecked, MessageAudio, Button} from "components"
 import {Popover, Modal} from "antd"
 import {EllipsisOutlined, ExclamationCircleOutlined} from "@ant-design/icons"
 
@@ -27,16 +27,17 @@ const showConfirm = (_id: string) => {
 }
 interface MessageProps extends IMessage {
   setPreviewImage: React.Dispatch<React.SetStateAction<string>>
+  isTyping?: boolean
 }
 
 const Message = ({
-  user,
   _id,
   text,
   createdAt,
   isChecked,
   attachments,
   isMe,
+  isTyping,
   setPreviewImage,
 }: MessageProps) => {
   const renderAttachment = (item: IAttachment) => {
@@ -60,7 +61,7 @@ const Message = ({
       className={classNames(
         "message",
         {"message--is-me": isMe},
-        // {"message--is-typing": isTyping},
+        {"message--is-typing": isTyping},
         {
           "message--image":
             attachments &&
@@ -75,25 +76,14 @@ const Message = ({
         <Avatar user={user} />
       </div> */}
       <div className="message__content">
-        {/* {(text || "isTyping") && ( */}
         {text && (
           <div className="message__bubble">
-            {text && (
-              <div className="message__text">
-                {/* {reactStringReplace(text, /:(.+?):/g, (match, i) => (
+            <div className="message__text">
+              {/* {reactStringReplace(text, /:(.+?):/g, (match, i) => (
                   <Emoji key={i} emoji={match} set="apple" size={16} />
                 ))} */}
-                {text}
-              </div>
-            )}
-            {/* {isTyping && ( */}
-            {false && (
-              <div className="message__typing">
-                <span />
-                <span />
-                <span />
-              </div>
-            )}
+              {text}
+            </div>
           </div>
         )}
         {attachments && (

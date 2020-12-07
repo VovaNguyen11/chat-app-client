@@ -1,11 +1,11 @@
 import React, {memo} from "react"
 import classNames from "classnames"
 import {Link} from "react-router-dom"
-import {getMessageTime} from "utils/helpers"
+import {getMessageTime, isAudio} from "utils/helpers"
 
 import {Avatar, IconCkecked} from "components"
 
-import {IDialog, IUser} from "types"
+import {IDialog, IUser, IMessage} from "types"
 
 import "../Dialogs.scss"
 
@@ -14,6 +14,21 @@ interface DialogItemProps {
   isMe: boolean
   partner: IUser
   currentDialogId: string
+}
+
+const renderLastMessageText = (message: IMessage, isMe: boolean) => {
+  let text = ""
+  if (message.attachments?.length) {
+    if (isAudio(message.attachments)) {
+      text = "Audio message"
+    } else {
+      text = `${message.attachments.length} photos`
+    }
+  } else {
+    text = message.text || ""
+  }
+
+  return isMe ? `You: ${text}` : text
 }
 
 const DialogItem = ({
@@ -45,15 +60,11 @@ const DialogItem = ({
           </span>
         </div>
         <div className="dialogs__item-content-bottom">
-          {lastMessage && (
-            <>
-              <p>{lastMessage.text}</p>
-              {isMe ? (
-                <IconCkecked isChecked={lastMessage.isChecked} />
-              ) : (
-                <div className="dialogs__item-count">3</div>
-              )}
-            </>
+          <p>{renderLastMessageText(lastMessage, isMe)}</p>
+          {isMe ? (
+            <IconCkecked isChecked={lastMessage.isChecked} />
+          ) : (
+            <div className="dialogs__item-count">3</div>
           )}
         </div>
       </div>

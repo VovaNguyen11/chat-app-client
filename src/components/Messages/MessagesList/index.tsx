@@ -12,7 +12,7 @@ import {
 } from "store/actions/messages"
 
 import {Spin, Empty, Modal} from "antd"
-import {Message} from "components"
+import {Message, MessageTyping} from "components"
 
 import "./MessagesList.scss"
 
@@ -28,8 +28,10 @@ const MessagesList = () => {
   )
 
   const [previewImage, setPreviewImage] = useState("")
+  const [isTyping, setIsTyping] = useState(false)
 
   const messagesRef = useRef() as React.MutableRefObject<HTMLDivElement>
+  const typingTimeoutRef = useRef() as React.MutableRefObject<NodeJS.Timeout>
 
   const onAddNewMessage = useCallback(
     (message: IMessage) => {
@@ -49,6 +51,22 @@ const MessagesList = () => {
     [currentDialogId, dispatch]
   )
 
+  const handleTyping = useCallback(
+    (dialogId: string) => {
+      if (dialogId === currentDialogId) {
+        console.log(dialogId)
+        console.log(currentDialogId)
+
+        setIsTyping(true)
+        clearTimeout(typingTimeoutRef.current)
+        typingTimeoutRef.current = setTimeout(() => {
+          setIsTyping(false)
+        }, 5000)
+      }
+    },
+    [currentDialogId]
+  )
+
   useEffect(() => {
     if (currentDialogId) {
       dispatch(fetchMessagesAction(currentDialogId))
@@ -57,7 +75,7 @@ const MessagesList = () => {
 
   useEffect(() => {
     messagesRef.current.scrollTo(0, messagesRef.current.scrollHeight)
-  }, [messages])
+  }, [messages, isTyping])
 
   useEffect(() => {
     socket.on("NEW_MESSAGE", onAddNewMessage)
@@ -67,6 +85,14 @@ const MessagesList = () => {
       socket.removeListener("REMOVE_MESSAGE", onRemoveMessage)
     }
   }, [onAddNewMessage, onRemoveMessage])
+
+  useEffect(() => {
+    socket.on("DIALOGS:TYPING", handleTyping)
+    return () => {
+      socket.removeListener("DIALOGS:TYPING", handleTyping)
+      setIsTyping(false)
+    }
+  }, [handleTyping])
 
   return (
     <div
@@ -89,6 +115,7 @@ const MessagesList = () => {
       ) : (
         <Empty description="Dialog is empty" image={null} />
       )}
+      {isTyping && <MessageTyping />}
       <Modal
         visible={!!previewImage}
         footer={null}

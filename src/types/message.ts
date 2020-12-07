@@ -14,7 +14,6 @@ export interface IMessage {
   attachments?: Array<IAttachment>
   isMe?: boolean
   isChecked?: boolean
-  isTyping?: boolean
   dialog: string
 }
 

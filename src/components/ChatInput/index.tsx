@@ -1,13 +1,20 @@
 import React, {useState, useEffect} from "react"
 import {useSelector} from "react-redux"
-import {attachmentsApi, messagesApi} from "services/api"
+import {messagesApi} from "services/api"
+import socket from "services/socket.io"
 
 import {RootState} from "store/reducers"
 
-import {Button, EmojiPicker, AttachmentsWall, FileUploader} from "components"
+import {
+  Button,
+  EmojiPicker,
+  AttachmentsWall,
+  FileUploader,
+  AudioRecorder,
+} from "components"
 import {Input} from "antd"
 import {RcFile} from "antd/lib/upload/interface"
-import {SendOutlined, AudioOutlined, CloseOutlined} from "@ant-design/icons"
+import {SendOutlined, CloseOutlined, LoadingOutlined} from "@ant-design/icons"
 
 import "./ChatInput.scss"
 
@@ -26,6 +33,7 @@ const ChatInput = ({
   const [attachments, setAttachments] = useState<RcFile[]>([])
   const [isRecording, setIsRecording] = useState(false)
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
+  const [audioLoading, setAudioLoading] = useState(false)
 
   const {currentDialogId} = useSelector(({dialogs}: RootState) => ({
     currentDialogId: dialogs.currentDialogId,
@@ -38,8 +46,10 @@ const ChatInput = ({
     )
   }, [attachments, messagesFooterRef, messagesHeaderRef, setContentHeight])
 
-  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+  const onInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    socket.emit("DIALOGS:TYPING", currentDialogId)
     setInputValue(e.target.value)
+  }
 
   const handleEnterKeyPressed = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -62,21 +72,6 @@ const ChatInput = ({
 
   const cancelRecording = () => setIsRecording(false)
 
-  const handleRecordingAudio = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({audio: true})
-    const audioRecorder = new MediaRecorder(stream)
-    setMediaRecorder(audioRecorder)
-    audioRecorder.start()
-
-    audioRecorder.onstart = () => setIsRecording(true)
-    audioRecorder.onstop = () => setIsRecording(false)
-
-    audioRecorder.ondataavailable = async e => {
-      const res = await attachmentsApi.upload(e.data)
-      handleSendAudio(res)
-    }
-  }
-
   return (
     <div className="chat-input">
       {isRecording ? (
@@ -88,7 +83,6 @@ const ChatInput = ({
             type="link"
             shape="circle"
             icon={<CloseOutlined />}
-            className="stop-recording"
           />
         </div>
       ) : (
@@ -107,18 +101,15 @@ const ChatInput = ({
       )}
 
       <div className="chat-input__actions">
-        <EmojiPicker setInputValue={setInputValue} />
-        {!isRecording && !inputValue.trim() ? (
+        {!isRecording && <EmojiPicker setInputValue={setInputValue} />}
+        {audioLoading ? (
           <Button
-            onClick={handleRecordingAudio}
             type="link"
             size="large"
             shape="circle"
-            icon={<AudioOutlined />}
+            icon={<LoadingOutlined />}
           />
-        ) : null}
-
-        {isRecording || inputValue.trim() || attachments.length ? (
+        ) : isRecording || inputValue.trim() || attachments.length ? (
           <Button
             onClick={handleSendMessage}
             type="link"
@@ -126,14 +117,21 @@ const ChatInput = ({
             shape="circle"
             icon={<SendOutlined />}
           />
-        ) : null}
+        ) : (
+          <AudioRecorder
+            setMediaRecorder={setMediaRecorder}
+            setIsRecording={setIsRecording}
+            handleSendAudio={handleSendAudio}
+            setAudioLoading={setAudioLoading}
+          />
+        )}
       </div>
-      {attachments.length > 0 ? (
+      {attachments.length > 0 && (
         <AttachmentsWall
           attachments={attachments}
           setAttachments={setAttachments}
         />
-      ) : null}
+      )}
     </div>
   )
 }

@@ -17,7 +17,7 @@ const FileUploader = ({setAttachments}: FileUploaderProps) => {
     beforeUpload(file: RcFile) {
       const acceptTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"]
       if (!acceptTypes.includes(file.type)) {
-        message.error("You can only upload JPG|JPEG|PNG|GIF files!",2000)
+        message.error("You can only upload JPG|JPEG|PNG|GIF files!", 3)
       }
       return !!acceptTypes.includes(file.type)
     },

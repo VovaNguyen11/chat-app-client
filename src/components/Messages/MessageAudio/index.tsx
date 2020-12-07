@@ -22,12 +22,16 @@ const MessageAudio = ({audioSrc}: MessageAudioProps) => {
     setIsPlaying(prevState => !prevState)
   }
 
-  const handleLoadMetaData = async (e: any) => {
-    while (audioRef.current.duration === Infinity) {
+  const handleLoadMetaData = async () => {
+    while (audioRef.current && audioRef.current.duration === Infinity) {
       await new Promise(r => setTimeout(r, 1000))
-      audioRef.current.currentTime = 10000000 * Math.random()
+      if (audioRef.current) {
+        audioRef.current.currentTime = 10000000 * Math.random()
+      }
     }
-    audioRef.current.currentTime = 0
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0
+    }
   }
 
   const handleTimeUpdate = () => {
