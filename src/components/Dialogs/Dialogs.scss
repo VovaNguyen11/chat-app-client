@@ -54,8 +54,10 @@
           color: #fff;
         }
       }
-      .icon-checked {
-        color: white;
+      svg {
+        path {
+          fill: #fff;
+        }
       }
     }
 
@@ -87,7 +89,7 @@
       }
       &-bottom {
         @include flex-s-between;
-        align-items: flex-start;
+        // align-items: flex-start;
         p {
           flex: 1 0 100%;
           margin: 0;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, memo} from "react"
+import React, {useEffect, useState, memo, useCallback} from "react"
 import {useSelector, useDispatch} from "react-redux"
 import {Empty} from "antd"
 import _orderBy from "lodash/orderBy"
@@ -6,7 +6,12 @@ import socket from "services/socket.io"
 
 import {IDialog} from "types"
 import {RootState} from "store/reducers"
-import {fetchDialogsAction, setCurrentDialogAction} from "store/actions/dialogs"
+import {
+  fetchDialogsAction,
+  setCurrentDialogAction,
+  updateDialogItemAction,
+  addDialogAction,
+} from "store/actions/dialogs"
 
 import {DialogsItem} from "components"
 
@@ -28,9 +33,23 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
 
   const [filteredDialogs, setFilteredDialogs] = useState<Array<IDialog>>([])
 
-  useEffect(() => {
-    dispatch(fetchDialogsAction())
-  }, [dispatch])
+  const handleAddDialog = useCallback(
+    (dialog: IDialog) => {
+      dispatch(addDialogAction(dialog))
+
+      if (user && dialog.author._id === user._id) {
+        dispatch(setCurrentDialogAction(dialog._id))
+      }
+    },
+    [dispatch, user]
+  )
+
+  const handleUpdateDialog = useCallback(
+    (dialog: IDialog) => {
+      dispatch(updateDialogItemAction(dialog))
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
     if (searchValue && dialogs.length) {
@@ -51,16 +70,19 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
   }, [searchValue, dialogs, user])
 
   useEffect(() => {
-    socket.on("NEW_DIALOG", (dialog: IDialog) => {
-      dispatch(fetchDialogsAction())
-      if (user && dialog.author._id === user._id) {
-        console.log(user)
-        dispatch(setCurrentDialogAction(dialog._id))
-      }
-    })
-    socket.on("UPDATE_LAST_MESSAGE", () => dispatch(fetchDialogsAction()))
-    socket.on("NEW_MESSAGE", () => dispatch(fetchDialogsAction()))
-  }, [dispatch, user])
+    dispatch(fetchDialogsAction())
+
+    socket.on("NEW_DIALOG", handleAddDialog)
+    socket.on("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
+    socket.on("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
+    // socket.on("MESSAGES_CHECKED")
+
+    return () => {
+      socket.removeListener("NыEW_DIALOG", handleAddDialog)
+      socket.removeListener("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
+      socket.removeListener("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
+    }
+  }, [handleAddDialog, handleUpdateDialog, dispatch])
 
   return (
     <div className="dialogs">

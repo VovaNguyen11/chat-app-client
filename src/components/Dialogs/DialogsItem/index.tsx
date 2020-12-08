@@ -59,14 +59,16 @@ const DialogItem = ({
               : getMessageTime(new Date(createdAt))}
           </span>
         </div>
-        <div className="dialogs__item-content-bottom">
-          <p>{renderLastMessageText(lastMessage, isMe)}</p>
-          {isMe ? (
-            <IconCkecked isChecked={lastMessage.isChecked} />
-          ) : (
-            <div className="dialogs__item-count">3</div>
-          )}
-        </div>
+        {lastMessage && (
+          <div className="dialogs__item-content-bottom">
+            <p>{renderLastMessageText(lastMessage, isMe)}</p>
+            {isMe ? (
+              <IconCkecked isChecked={lastMessage.isChecked} />
+            ) : (
+              <div className="dialogs__item-count"></div>
+            )}
+          </div>
+        )}
       </div>
     </Link>
   )

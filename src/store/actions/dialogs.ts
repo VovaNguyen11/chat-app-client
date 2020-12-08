@@ -10,6 +10,8 @@ import {
   SET_DIALOGS,
   SET_CURRENT_DIALOG,
   SET_DIALOGS_LOADING,
+  UPDATE_DIALOG_ITEM,
+  ADD_DIALOG,
 } from "../actions_constants"
 
 type AppThunk<ReturnType = void> = ThunkAction<
@@ -23,6 +25,7 @@ const setDialogs = (data: IDialog[]) => ({
   type: SET_DIALOGS,
   payload: data,
 })
+
 const setCurrentDialog = (id: string | undefined) => ({
   type: SET_CURRENT_DIALOG,
   payload: id,
@@ -34,6 +37,16 @@ export const setCurrentDialogAction = (
   socket.emit("DIALOGS:JOIN", id)
   dispatch(setCurrentDialog(id))
 }
+
+export const addDialogAction = (dialog: IDialog) => ({
+  type: ADD_DIALOG,
+  payload: dialog,
+})
+
+export const updateDialogItemAction = (dialog: IDialog) => ({
+  type: UPDATE_DIALOG_ITEM,
+  payload: dialog,
+})
 
 export const setDialogsLoadingAction = (value: boolean) => ({
   type: SET_DIALOGS_LOADING,

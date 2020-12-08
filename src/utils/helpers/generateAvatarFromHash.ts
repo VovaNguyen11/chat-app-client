@@ -10,8 +10,16 @@ const generateAvatarFromHash = (hash: string | undefined) => {
     .map(char => getCorrectIndex(char.charCodeAt(0)))
 
   return {
-    color: tinycolor({r, g, b}).lighten(10).saturate(10).toHexString(),
-    colorLighten: tinycolor({r, g, b}).lighten(55).saturate(55).toHexString(),
+    color: tinycolor({r, g, b})
+      .lighten(10)
+      .brighten(10)
+      .saturate(10)
+      .toHexString(),
+    colorLighten: tinycolor({r, g, b})
+      .brighten(15)
+      .lighten(25)
+      .saturate(60)
+      .toHexString(),
   }
 }
 

@@ -1,9 +1,11 @@
 import {IDialogsState, DialogsActionType} from "types"
 
 import {
+  ADD_DIALOG,
   SET_CURRENT_DIALOG,
   SET_DIALOGS,
   SET_DIALOGS_LOADING,
+  UPDATE_DIALOG_ITEM,
 } from "store/actions_constants"
 
 const initialState: IDialogsState = {
@@ -27,6 +29,15 @@ const dialogs = (
       return {
         ...state,
         currentDialogId: action.payload,
+      }
+    case ADD_DIALOG:
+      return {...state, items: [...state.items, action.payload]}
+    case UPDATE_DIALOG_ITEM:
+      return {
+        ...state,
+        items: state.items.map(dialog =>
+          dialog._id === action.payload._id ? action.payload : dialog
+        ),
       }
     case SET_DIALOGS_LOADING:
       return {

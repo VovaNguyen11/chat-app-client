@@ -69,6 +69,7 @@
     align-self: flex-start;
     position: relative;
     right: -20px;
+    top: 3px;
   }
   &__avatar {
     width: 40px;
@@ -80,8 +81,8 @@
 
   &__status {
     align-self: flex-end;
-    margin: 0px 0 3px 0px;
-    img {
+    margin: 0px 0 2px 0px;
+    svg {
       display: block;
     }
   }
@@ -103,6 +104,7 @@
     font-size: rem(14);
     display: flex;
     align-items: center;
+    white-space: pre-line;
   }
 
   &__attachments {

@@ -1,7 +1,9 @@
 import {
   SET_DIALOGS,
+  ADD_DIALOG,
   SET_CURRENT_DIALOG,
   SET_DIALOGS_LOADING,
+  UPDATE_DIALOG_ITEM,
 } from "store/actions_constants"
 
 import {IUser, IMessage} from "types"
@@ -35,7 +37,19 @@ interface ISetDialogsLoadingAction {
   payload: boolean
 }
 
+interface IAddDialogAction {
+  type: typeof ADD_DIALOG
+  payload: IDialog
+}
+
+interface IUpdateDialogItem {
+  type: typeof UPDATE_DIALOG_ITEM
+  payload: IDialog
+}
+
 export type DialogsActionType =
   | ISetDialogsAction
   | ISetCurrentDialogAction
   | ISetDialogsLoadingAction
+  | IAddDialogAction
+  | IUpdateDialogItem

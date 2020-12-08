@@ -27,7 +27,6 @@ const showConfirm = (_id: string) => {
 }
 interface MessageProps extends IMessage {
   setPreviewImage: React.Dispatch<React.SetStateAction<string>>
-  isTyping?: boolean
 }
 
 const Message = ({
@@ -37,7 +36,6 @@ const Message = ({
   isChecked,
   attachments,
   isMe,
-  isTyping,
   setPreviewImage,
 }: MessageProps) => {
   const renderAttachment = (item: IAttachment) => {
@@ -61,15 +59,13 @@ const Message = ({
       className={classNames(
         "message",
         {"message--is-me": isMe},
-        {"message--is-typing": isTyping},
         {
           "message--image":
             attachments &&
             !isAudio(attachments) &&
             attachments.length === 1 &&
             !text,
-        },
-        {"message--audio": attachments && isAudio(attachments)}
+        }
       )}
     >
       {/* <div className="message__avatar">
