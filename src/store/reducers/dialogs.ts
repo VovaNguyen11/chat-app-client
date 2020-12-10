@@ -6,6 +6,7 @@ import {
   SET_DIALOGS,
   SET_DIALOGS_LOADING,
   UPDATE_DIALOG_ITEM,
+  UPDATE_LAST_MESSAGE_STATUS,
 } from "store/actions_constants"
 
 const initialState: IDialogsState = {
@@ -38,6 +39,16 @@ const dialogs = (
         items: state.items.map(dialog =>
           dialog._id === action.payload._id ? action.payload : dialog
         ),
+      }
+    case UPDATE_LAST_MESSAGE_STATUS:
+      return {
+        ...state,
+        items: state.items.map(dialog => {
+          if (dialog._id === action.payload) {
+            dialog.lastMessage.isChecked = true
+          }
+          return dialog
+        }),
       }
     case SET_DIALOGS_LOADING:
       return {

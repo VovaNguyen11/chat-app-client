@@ -9,7 +9,9 @@ import {RootState} from "store/reducers"
 import {getUserDataAction} from "store/actions/user"
 
 const App = () => {
-  const isAuth = useSelector(({user}: RootState) => user.isAuth)
+  const {isAuth} = useSelector(({user}: RootState) => ({
+    isAuth: user.isAuth,
+  }))
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -20,10 +22,10 @@ const App = () => {
     <div className="wrapper">
       <Switch>
         <Route exact path={["/", "/im", "/dialogs/:id"]}>
-          {isAuth ? <HomePage /> : <Redirect to="/signup" />}
+          {isAuth ? <HomePage /> : <Redirect to="/signin" />}
         </Route>
         <Route path={["/signin", "/signup"]}>
-          <AuthPage />
+          {isAuth ? <Redirect to="/im" /> : <AuthPage />}
         </Route>
       </Switch>
     </div>

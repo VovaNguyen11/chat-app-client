@@ -11,7 +11,7 @@ const user = (state = initialState, action: UserActionType): IUserState => {
     case SET_USER:
       return {
         data: action.payload,
-        isAuth: true,
+        isAuth: action.payload.confirmed,
       }
     case SET_IS_AUTH:
       return {

@@ -8,6 +8,8 @@ import {Block} from "components"
 
 import "./VerifyEmail.scss"
 
+
+
 const renderText = (verified: boolean, hash: string) => {
   if (!hash) {
     return (

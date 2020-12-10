@@ -4,6 +4,7 @@ import {
   SET_CURRENT_DIALOG,
   SET_DIALOGS_LOADING,
   UPDATE_DIALOG_ITEM,
+  UPDATE_LAST_MESSAGE_STATUS
 } from "store/actions_constants"
 
 import {IUser, IMessage} from "types"
@@ -42,9 +43,14 @@ interface IAddDialogAction {
   payload: IDialog
 }
 
-interface IUpdateDialogItem {
+interface IUpdateDialogItemAction {
   type: typeof UPDATE_DIALOG_ITEM
   payload: IDialog
+}
+
+interface IUpdateLastMessageStatusAction {
+  type: typeof UPDATE_LAST_MESSAGE_STATUS
+  payload: string
 }
 
 export type DialogsActionType =
@@ -52,4 +58,5 @@ export type DialogsActionType =
   | ISetCurrentDialogAction
   | ISetDialogsLoadingAction
   | IAddDialogAction
-  | IUpdateDialogItem
+  | IUpdateDialogItemAction
+  | IUpdateLastMessageStatusAction

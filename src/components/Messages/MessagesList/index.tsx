@@ -54,9 +54,6 @@ const MessagesList = () => {
   const handleTyping = useCallback(
     (dialogId: string) => {
       if (dialogId === currentDialogId) {
-        console.log(dialogId)
-        console.log(currentDialogId)
-
         setIsTyping(true)
         clearTimeout(typingTimeoutRef.current)
         typingTimeoutRef.current = setTimeout(() => {

@@ -11,6 +11,7 @@ import {
   setCurrentDialogAction,
   updateDialogItemAction,
   addDialogAction,
+  updateLastMessageStatusAction,
 } from "store/actions/dialogs"
 
 import {DialogsItem} from "components"
@@ -51,6 +52,15 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
     [dispatch]
   )
 
+  const handleUpdateLastMessageStatus = useCallback(
+    (dialogId: string) => {
+      console.log(dialogId)
+
+      dispatch(updateLastMessageStatusAction(dialogId))
+    },
+    [dispatch]
+  )
+
   useEffect(() => {
     if (searchValue && dialogs.length) {
       setFilteredDialogs(
@@ -75,14 +85,19 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
     socket.on("NEW_DIALOG", handleAddDialog)
     socket.on("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
     socket.on("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
-    // socket.on("MESSAGES_CHECKED")
+    socket.on("DIALOGS: MESSAGES_CHECKED", handleUpdateLastMessageStatus)
 
     return () => {
       socket.removeListener("NыEW_DIALOG", handleAddDialog)
       socket.removeListener("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
       socket.removeListener("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
     }
-  }, [handleAddDialog, handleUpdateDialog, dispatch])
+  }, [
+    handleAddDialog,
+    handleUpdateDialog,
+    handleUpdateLastMessageStatus,
+    dispatch,
+  ])
 
   return (
     <div className="dialogs">

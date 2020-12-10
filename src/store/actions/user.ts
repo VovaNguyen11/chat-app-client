@@ -26,29 +26,24 @@ export const setIsAuth = (value: boolean) => ({
   payload: value,
 })
 
-export const getUserDataAction = (): AppThunk => (dispatch): Promise<any> =>
-  userApi
-    .getUserData()
-    .then(data => {
-      dispatch(setUser(data))
-    })
-    .catch(err => {
-      // throw new Error(err)
-      // if (err.response.status === 403) {
-      //   dispatch(setIsAuth(false))
-      //   delete window.localStorage.token
-      // }
-    })
-
-export const userLoginAction = (postData: ILoginFormValues): AppThunk => (
+export const getUserDataAction = (): AppThunk => async (
   dispatch
-): Promise<any> =>
-  userApi
-    .signIn(postData)
-    .then(({token}) => {
-      NetworkService.api.defaults.headers.common["token"] = token
-      window.localStorage.token = token
-    })
-    .then(() => {
-      dispatch(getUserDataAction())
-    })
+): Promise<any> => {
+  const data: IUser = await userApi.getUserData()
+  dispatch(setUser(data))
+  if (!data.confirmed) {
+    dispatch(setIsAuth(false))
+    delete window.localStorage.token
+  } else {
+    dispatch(setIsAuth(true))
+  }
+  return data
+}
+
+export const userLoginAction = (
+  postData: ILoginFormValues
+): AppThunk => async (): Promise<any> => {
+  const {token} = await userApi.signIn(postData)
+  NetworkService.api.defaults.headers.common["token"] = token
+  window.localStorage.token = token
+}

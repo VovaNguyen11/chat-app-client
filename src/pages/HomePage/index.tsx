@@ -1,5 +1,5 @@
 import React, {useEffect, memo} from "react"
-import {useLocation} from "react-router-dom"
+import {useLocation, useHistory} from "react-router-dom"
 import {useSelector, useDispatch} from "react-redux"
 import {RootState} from "store/reducers"
 import {setCurrentDialogAction} from "store/actions/dialogs"
@@ -11,10 +11,14 @@ import "./HomePage.scss"
 
 const HomePage = () => {
   const location = useLocation()
+  const history = useHistory()
   const dispatch = useDispatch()
-  const {currentDialogId} = useSelector(({dialogs}: RootState) => ({
-    currentDialogId: dialogs.currentDialogId,
-  }))
+  const {currentDialogId, isAuth} = useSelector(
+    ({dialogs, user}: RootState) => ({
+      currentDialogId: dialogs.currentDialogId,
+      isAuth: user.isAuth,
+    })
+  )
 
   useEffect(() => {
     if (location.pathname.split("/")[1] === "dialogs") {
@@ -23,6 +27,12 @@ const HomePage = () => {
       dispatch(setCurrentDialogAction(""))
     }
   }, [location, dispatch])
+
+  useEffect(() => {
+    if (!isAuth) {
+      history.push("/signup/verify")
+    }
+  }, [isAuth, history])
 
   return (
     <section className="home">

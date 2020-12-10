@@ -48,6 +48,11 @@ export const updateDialogItemAction = (dialog: IDialog) => ({
   payload: dialog,
 })
 
+export const updateLastMessageStatusAction = (dialogId: string) => ({
+  type: UPDATE_DIALOG_ITEM,
+  payload: dialogId,
+})
+
 export const setDialogsLoadingAction = (value: boolean) => ({
   type: SET_DIALOGS_LOADING,
   payload: value,
