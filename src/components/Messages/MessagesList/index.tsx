@@ -37,6 +37,7 @@ const MessagesList = () => {
     (message: IMessage) => {
       if (currentDialogId === message.dialog) {
         dispatch(addMessageAction(message))
+        setIsTyping(false)
       }
     },
     [currentDialogId, dispatch]
@@ -58,7 +59,7 @@ const MessagesList = () => {
         clearTimeout(typingTimeoutRef.current)
         typingTimeoutRef.current = setTimeout(() => {
           setIsTyping(false)
-        }, 5000)
+        }, 3000)
       }
     },
     [currentDialogId]
@@ -99,7 +100,9 @@ const MessagesList = () => {
       ref={messagesRef}
     >
       {isLoading ? (
-        <Spin tip="Loading..." size="large" />
+        <div className="messages__list--loading">
+          <Spin tip="Loading..." size="large" />
+        </div>
       ) : messages.length > 0 ? (
         messages.map(m => (
           <Message

@@ -23,13 +23,11 @@ const LoginFormContainer = withFormik<
 
   handleSubmit: async (
     values: ILoginFormValues,
-    {setSubmitting, setFieldValue, setStatus, props}
+    {setSubmitting, setStatus, props}
   ) => {
     try {
       await props.userLoginAction(values)
       const user = await props.getUserDataAction()
-      // setStatus()
-      // setSubmitting(false)
 
       if (user?.confirmed) {
         props.history.push("/im")

@@ -106,9 +106,11 @@
       font-weight: bold;
       border-radius: 10px;
       text-align: center;
-      line-height: 1;
-      padding: 4px 6px;
-      font-size: rem(10);
+      /* line-height: 1; */
+      /* padding: 4px 6px; */
+      font-size: 0.71429rem;
+      width: 12px;
+      height: 12px;
     }
   }
 }

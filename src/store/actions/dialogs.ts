@@ -11,6 +11,7 @@ import {
   SET_CURRENT_DIALOG,
   SET_DIALOGS_LOADING,
   UPDATE_DIALOG_ITEM,
+  UPDATE_LAST_MESSAGE_STATUS,
   ADD_DIALOG,
 } from "../actions_constants"
 
@@ -49,7 +50,7 @@ export const updateDialogItemAction = (dialog: IDialog) => ({
 })
 
 export const updateLastMessageStatusAction = (dialogId: string) => ({
-  type: UPDATE_DIALOG_ITEM,
+  type: UPDATE_LAST_MESSAGE_STATUS,
   payload: dialogId,
 })
 

@@ -11,6 +11,8 @@ const dialogsApi = {
     }
   },
   addDialog: (partnerId: string, text: string) => {
+    console.log(partnerId);
+    
     try {
       const data = POST("/dialogs/create", {partner: partnerId, text})
       return data

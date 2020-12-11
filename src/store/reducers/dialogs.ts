@@ -45,8 +45,12 @@ const dialogs = (
         ...state,
         items: state.items.map(dialog => {
           if (dialog._id === action.payload) {
-            dialog.lastMessage.isChecked = true
+            return {
+              ...dialog,
+              lastMessage: {...dialog.lastMessage, isChecked: true},
+            }
           }
+
           return dialog
         }),
       }

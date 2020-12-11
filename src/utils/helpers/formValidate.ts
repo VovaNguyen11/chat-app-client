@@ -15,7 +15,9 @@ const validate = ({
   }
   if (!fullName) errors.fullName = "Name required"
   if (!password) errors.password = "Password required"
+  if (password.length < 6) errors.password = "Password too short"
   if (!passwordConfirm) errors.passwordConfirm = "Password required"
+  if (passwordConfirm.length < 6) errors.passwordConfirm = "Password too short"
   if (passwordConfirm !== password)
     errors.passwordConfirm = "Passwords don't match"
 

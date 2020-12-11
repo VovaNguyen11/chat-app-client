@@ -62,10 +62,9 @@ const DialogItem = ({
         {lastMessage && (
           <div className="dialogs__item-content-bottom">
             <p>{renderLastMessageText(lastMessage, isMe)}</p>
-            {isMe ? (
-              <IconCkecked isChecked={lastMessage.isChecked} />
-            ) : (
-              <div className="dialogs__item-count"></div>
+            {isMe && <IconCkecked isChecked={lastMessage.isChecked} />}
+            {!isMe && !lastMessage.isChecked && (
+              <div className="dialogs__item-count" />
             )}
           </div>
         )}

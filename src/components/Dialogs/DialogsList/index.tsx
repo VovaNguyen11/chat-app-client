@@ -36,7 +36,9 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
 
   const handleAddDialog = useCallback(
     (dialog: IDialog) => {
-      dispatch(addDialogAction(dialog))
+      if (user?._id === dialog.author._id || user?._id === dialog.partner._id) {
+        dispatch(addDialogAction(dialog))
+      }
 
       if (user && dialog.author._id === user._id) {
         dispatch(setCurrentDialogAction(dialog._id))
@@ -54,8 +56,6 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
 
   const handleUpdateLastMessageStatus = useCallback(
     (dialogId: string) => {
-      console.log(dialogId)
-
       dispatch(updateLastMessageStatusAction(dialogId))
     },
     [dispatch]
@@ -91,6 +91,10 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
       socket.removeListener("NыEW_DIALOG", handleAddDialog)
       socket.removeListener("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
       socket.removeListener("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
+      socket.removeListener(
+        "DIALOGS: MESSAGES_CHECKED",
+        handleUpdateLastMessageStatus
+      )
     }
   }, [
     handleAddDialog,

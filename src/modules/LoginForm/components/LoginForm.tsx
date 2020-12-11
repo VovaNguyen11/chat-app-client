@@ -1,5 +1,5 @@
 import React from "react"
-import {Link, RouteComponentProps} from "react-router-dom"
+import {Link} from "react-router-dom"
 
 import {FormikProps} from "formik"
 import {Form, Input, FormItem} from "formik-antd"
@@ -9,17 +9,13 @@ import {Button, Block} from "components"
 
 import {ILoginFormValues} from "types"
 
-interface LoginFormContainerProps
-  extends RouteComponentProps<any>,
-    FormikProps<ILoginFormValues> {}
-
 const LoginForm = ({
   values,
   handleSubmit,
   handleChange,
   isSubmitting,
   status,
-}: LoginFormContainerProps) => {
+}: FormikProps<ILoginFormValues>) => {
   return (
     <Block>
       <div className="auth__top">

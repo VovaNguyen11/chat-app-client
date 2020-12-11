@@ -4,7 +4,9 @@
   height: 100%;
   padding: 10px 20px;
   overflow-y: auto;
-  &--empty {
+  &--empty,
+  &--loading {
     @include flex-centered;
+    height: 100%;
   }
 }

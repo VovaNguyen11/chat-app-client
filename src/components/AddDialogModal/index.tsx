@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {memo, useState} from "react"
 import {userApi, dialogsApi} from "services/api"
 
 import {Modal, Form, Select, Input} from "antd"
@@ -33,7 +33,11 @@ const AddFormModal = () => {
 
   const onSearchValueChange = (value: string) => setSearchValue(value)
 
-  const onSelectUser = (value: string) => setSelectedUserId(value)
+  const onSelectUser = (value: string) => {
+    setSelectedUserId(value)
+    setSearchValue(users.find(user => user._id === value)?.fullName || "")
+    setUsers(users.filter(user => user._id === value))
+  }
   const onMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) =>
     setMessageText(e.target.value)
 
@@ -50,6 +54,9 @@ const AddFormModal = () => {
       const data = await userApi.findUsers(searchValue)
       setUsers(data)
       setIsLoading(false)
+    } else {
+      setUsers([])
+      setSelectedUserId("")
     }
   }
 
@@ -114,4 +121,4 @@ const AddFormModal = () => {
   )
 }
 
-export default AddFormModal
+export default memo(AddFormModal)
