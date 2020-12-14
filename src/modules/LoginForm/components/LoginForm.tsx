@@ -19,8 +19,8 @@ const LoginForm = ({
   return (
     <Block>
       <div className="auth__top">
-        <h2>Войдите в аккаунт</h2>
-        <p>Пожалуйста,войдите в аккаунт</p>
+        <h2>Sign in</h2>
+        <p>Please, sign in to use the app</p>
       </div>
       <Form onFinish={handleSubmit}>
         <FormItem name="email">
