@@ -10,6 +10,7 @@ import {
   SET_MESSAGES,
   SET_MESSAGES_LOADING,
   ADD_MESSAGE,
+  UPDATE_CHECKED_STATUS,
   REMOVE_MESSAGE,
 } from "../actions_constants"
 
@@ -50,4 +51,9 @@ export const addMessageAction = (message: IMessage) => ({
 export const removeMessageAction = (id: string) => ({
   type: REMOVE_MESSAGE,
   payload: id,
+})
+
+export const updateCheckedAction = (dialogId: string, userId: string) => ({
+  type: UPDATE_CHECKED_STATUS,
+  payload: {dialogId, userId},
 })

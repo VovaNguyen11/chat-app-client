@@ -3,6 +3,7 @@ import {
   REMOVE_MESSAGE,
   SET_MESSAGES,
   SET_MESSAGES_LOADING,
+  UPDATE_CHECKED_STATUS,
 } from "store/actions_constants"
 
 import {IMessagesState, MessagesActionType} from "types"
@@ -31,6 +32,16 @@ const messages = (
       return {
         ...state,
         items: state.items.filter(message => message._id !== action.payload),
+      }
+    case UPDATE_CHECKED_STATUS:
+      return {
+        ...state,
+        items: state.items.map(message => {
+          if (message.user._id !== action.payload.userId) {
+            return {...message, isChecked: true}
+          }
+          return message
+        }),
       }
     case SET_MESSAGES_LOADING:
       return {

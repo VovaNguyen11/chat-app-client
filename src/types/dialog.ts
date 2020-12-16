@@ -50,7 +50,10 @@ interface IUpdateDialogItemAction {
 
 interface IUpdateLastMessageStatusAction {
   type: typeof UPDATE_LAST_MESSAGE_STATUS
-  payload: string
+  payload: {
+    dialogId: string
+    userId: string
+  }
 }
 
 export type DialogsActionType =

@@ -3,6 +3,7 @@ import {
   REMOVE_MESSAGE,
   SET_MESSAGES,
   SET_MESSAGES_LOADING,
+  UPDATE_CHECKED_STATUS,
 } from "store/actions_constants"
 import {IUser, IAttachment} from "types"
 
@@ -37,6 +38,14 @@ interface IRemoveMessageAction {
   payload: string
 }
 
+interface IUpdateCheckedStatusAction {
+  type: typeof UPDATE_CHECKED_STATUS
+  payload: {
+    dialogId: string
+    userId: string
+  }
+}
+
 interface ISetMessagesLoadingAction {
   type: typeof SET_MESSAGES_LOADING
   payload: boolean
@@ -46,4 +55,5 @@ export type MessagesActionType =
   | ISetMessagesAction
   | IAddMessageAction
   | IRemoveMessageAction
+  | IUpdateCheckedStatusAction
   | ISetMessagesLoadingAction

@@ -50,13 +50,16 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
   const handleUpdateDialog = useCallback(
     (dialog: IDialog) => {
       dispatch(updateDialogItemAction(dialog))
+      if (user && currentDialogId === dialog._id) {
+        dispatch(updateLastMessageStatusAction(dialog._id, user._id))
+      }
     },
-    [dispatch]
+    [dispatch, user, currentDialogId]
   )
 
   const handleUpdateLastMessageStatus = useCallback(
-    (dialogId: string) => {
-      dispatch(updateLastMessageStatusAction(dialogId))
+    (dialogId: string, userId: string) => {
+      dispatch(updateLastMessageStatusAction(dialogId, userId))
     },
     [dispatch]
   )
@@ -85,16 +88,13 @@ const DialogsList = ({searchValue}: DialogsListProps) => {
     socket.on("NEW_DIALOG", handleAddDialog)
     socket.on("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
     socket.on("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
-    socket.on("DIALOGS: MESSAGES_CHECKED", handleUpdateLastMessageStatus)
+    socket.on("MESSAGES_CHECKED", handleUpdateLastMessageStatus)
 
     return () => {
       socket.removeListener("NыEW_DIALOG", handleAddDialog)
       socket.removeListener("DIALOGS: MESSAGE_REMOVED", handleUpdateDialog)
       socket.removeListener("DIALOGS: NEW_MESSAGE", handleUpdateDialog)
-      socket.removeListener(
-        "DIALOGS: MESSAGES_CHECKED",
-        handleUpdateLastMessageStatus
-      )
+      socket.removeListener("MESSAGES_CHECKED", handleUpdateLastMessageStatus)
     }
   }, [
     handleAddDialog,

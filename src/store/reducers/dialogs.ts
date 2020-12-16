@@ -33,6 +33,7 @@ const dialogs = (
       }
     case ADD_DIALOG:
       return {...state, items: [...state.items, action.payload]}
+
     case UPDATE_DIALOG_ITEM:
       return {
         ...state,
@@ -41,13 +42,17 @@ const dialogs = (
         ),
       }
     case UPDATE_LAST_MESSAGE_STATUS:
+      const {dialogId, userId} = action.payload
+
       return {
         ...state,
         items: state.items.map(dialog => {
-          if (dialog._id === action.payload) {
-            return {
-              ...dialog,
-              lastMessage: {...dialog.lastMessage, isChecked: true},
+          if (dialog._id === dialogId) {
+            if (userId !== `${dialog.lastMessage.user}` && dialog.lastMessage) {
+              return {
+                ...dialog,
+                lastMessage: {...dialog.lastMessage, isChecked: true},
+              }
             }
           }
 

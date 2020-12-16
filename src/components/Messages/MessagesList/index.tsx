@@ -9,6 +9,7 @@ import {
   fetchMessagesAction,
   addMessageAction,
   removeMessageAction,
+  updateCheckedAction,
 } from "store/actions/messages"
 
 import {Spin, Empty, Modal} from "antd"
@@ -52,6 +53,15 @@ const MessagesList = () => {
     [currentDialogId, dispatch]
   )
 
+  const onMessagesChecked = useCallback(
+    (dialogId: string, userId: string) => {
+      if (currentDialogId === dialogId) {
+        dispatch(updateCheckedAction(dialogId, userId))
+      }
+    },
+    [currentDialogId, dispatch]
+  )
+
   const handleTyping = useCallback(
     (dialogId: string) => {
       if (dialogId === currentDialogId) {
@@ -78,11 +88,13 @@ const MessagesList = () => {
   useEffect(() => {
     socket.on("NEW_MESSAGE", onAddNewMessage)
     socket.on("REMOVE_MESSAGE", onRemoveMessage)
+    socket.on("MESSAGES_CHECKED", onMessagesChecked)
     return () => {
       socket.removeListener("NEW_MESSAGE", onAddNewMessage)
       socket.removeListener("REMOVE_MESSAGE", onRemoveMessage)
+      socket.removeListener("MESSAGES_CHECKED", onMessagesChecked)
     }
-  }, [onAddNewMessage, onRemoveMessage])
+  }, [onAddNewMessage, onRemoveMessage, onMessagesChecked])
 
   useEffect(() => {
     socket.on("DIALOGS:TYPING", handleTyping)

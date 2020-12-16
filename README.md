@@ -3,7 +3,7 @@
 This is the chat application client using Socket.io. The chat provides the ability to send audio messages, images, emoji. Also you can remove messages, track user's network status, messages checked status, etc.
 
 ## Live Demo
-[Demo](https://messenger-app-mern.herokuapp.com)
+[Demo](https://messenger-app-client.herokuapp.com)
 (Note: use the email that you have access for confirmation)
 
 ## Tech stack

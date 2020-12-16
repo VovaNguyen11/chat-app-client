@@ -15,6 +15,7 @@
     $item: &;
     display: flex;
     width: 100%;
+    max-width: 335px;
     transition: background-color 0.1s ease-in-out;
     padding: 10px 20px;
     cursor: pointer;
